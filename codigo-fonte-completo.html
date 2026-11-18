@@ -1,0 +1,2007 @@
+<!doctype html>
+<!--
+  SolAcess — código-fonte completo em um único arquivo.
+  Contém: index.html + assets/css/style.css + assets/js/loja.js, specs.js, main.js e hero.js.
+  As imagens e os vídeos continuam na pasta assets/ (img/ e video/):
+  deixe este arquivo na mesma pasta que a pasta assets/ para o site abrir completo.
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SolAcess · Protetor solar acessível</title>
+  <meta name="description" content="SolAcess é um projeto de protetor solar que une acessibilidade, praticidade e sustentabilidade: embalagem de bambu, bomba, rolo aplicador e sistema de refil. Em desenvolvimento pela Equipe 6 do SESI da Indústria.">
+  <meta name="theme-color" content="#24382B">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">
+  <style>
+/* ==================== assets/css/style.css ==================== */
+/* Layout: página de produto editorial — fotos grandes, superfícies creme calmas, verde-floresta como âncora e madeira como destaque. */
+:root {
+  --cream: #F5EFE4;
+  --cream-2: #EFE6D6;
+  --paper: #FBF8F2;       /* superfície dos cartões */
+  --sand: #E5D7C0;
+  --beige: #D6C1A0;
+  --sage: #C3D0B8;
+  --mint: #DDE6D4;
+  --mint-2: #E8EEE1;
+  --blush: #F1E6DB;
+  --bamboo: #8FA65E;
+  --bamboo-deep: #5F7A3A;
+  --bamboo-dry: #C99A5F;
+  --forest: #24382B;
+  --forest-2: #34503D;
+  --wood: #9A6532;        /* texto em destaque: contraste ≥ 4.5:1 sobre o creme */
+  --wood-soft: #B07A45;
+  --ink: #2A2B25;
+  --muted: #545849;
+  --line: rgba(36, 56, 43, .12);
+  --shadow: 0 24px 60px rgba(36, 56, 43, .12);
+  --radius: 22px;
+  --radius-sm: 16px;
+  --wrap: 1180px;
+  --space: clamp(84px, 10vw, 136px);
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans: "Nunito Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: 76px; scrollbar-gutter: stable; }
+/* durante a animação de entrada nada rola (roda, barra lateral, teclado, toque); o espaço da barra fica reservado, sem "pulo" */
+html.intro-lock { overflow: hidden; }
+html.texto-grande { font-size: 118.75%; }
+.reduce-motion { scroll-behavior: auto; }
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font: 400 1.0625rem/1.65 var(--sans);
+  overflow-x: hidden;
+}
+img, video, svg { display: block; max-width: 100%; }
+img, video { height: auto; }
+a { color: inherit; }
+h1, h2, h3 { margin: 0; font-weight: 400; }
+p { margin: 0 0 1em; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+figure { margin: 0; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip-link {
+  position: fixed; left: 16px; top: -60px; z-index: 100;
+  background: var(--forest); color: var(--cream); padding: 10px 16px; border-radius: 999px; text-decoration: none;
+}
+.skip-link:focus { top: 12px; }
+:focus-visible { outline: 3px solid var(--forest-2); outline-offset: 3px; border-radius: 6px; }
+
+.wrap { width: min(var(--wrap), 100% - 32px); margin-inline: auto; }
+
+/* ---------- Tipografia ---------- */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .7rem;
+  font: 800 .76rem/1 var(--sans); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--bamboo-deep); margin-bottom: 1.1rem;
+}
+.eyebrow::before { content: ""; width: 26px; height: 2px; border-radius: 2px; background: currentColor; opacity: .7; }
+.display {
+  font-family: var(--serif); font-weight: 300; font-size: clamp(2.1rem, 4.6vw, 3.7rem);
+  line-height: 1.07; letter-spacing: -.02em; color: var(--forest);
+  font-variation-settings: "opsz" 144; text-wrap: balance;
+}
+.display em, .display-sm em { font-style: italic; color: var(--wood); }
+.display-sm { font-family: var(--serif); font-weight: 300; font-size: clamp(1.7rem, 3vw, 2.4rem); line-height: 1.12; color: var(--forest); margin-bottom: 1rem; text-wrap: balance; }
+.note, .lead-text { color: var(--muted); max-width: 52ch; }
+.lead-text { font-size: 1.1rem; margin-top: 1.1rem; }
+.section-head { margin-bottom: clamp(36px, 5vw, 60px); position: relative; }
+.section-head.center { text-align: center; }
+.section-head.center .eyebrow { justify-content: center; }
+.section-head.center .display { margin-inline: auto; max-width: 22ch; }
+.section-head.center .lead-text { margin-inline: auto; max-width: 56ch; }
+.section-head .note { margin-top: 1rem; }
+.section-head.split { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px 60px; align-items: end; }
+.section-head.split .note { margin: 0 0 .4rem; }
+
+/* ---------- Botões ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .6em; min-height: 52px;
+  background: var(--forest); color: var(--cream); text-decoration: none; border: 2px solid var(--forest);
+  padding: .95rem 1.6rem; border-radius: 999px; font: 700 .98rem/1.1 var(--sans); cursor: pointer;
+  transition: background .25s, transform .25s, color .25s, border-color .25s;
+}
+.btn::after { content: "→"; }
+.btn:hover { background: var(--forest-2); border-color: var(--forest-2); transform: translateY(-2px); }
+.btn-ghost { background: transparent; color: var(--forest); }
+.btn-ghost::after { content: none; }
+.btn-ghost:hover { background: rgba(36, 56, 43, .08); color: var(--forest); }
+.btn-light { background: var(--cream); color: var(--forest); border-color: var(--cream); }
+.btn-light:hover { background: #fff; border-color: #fff; color: var(--forest); }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.8rem; }
+
+.pending, .price-todo {
+  font-family: var(--sans); font-size: .8rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--wood); display: inline-flex; align-items: center; gap: .5rem;
+}
+.pending::before, .price-todo::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: .6; }
+
+/* ---------- Cabeçalho ---------- */
+.site-header {
+  position: fixed; inset: 0 0 auto 0; z-index: 50;
+  display: flex; align-items: center; gap: 18px;
+  padding: 12px max(16px, calc((100vw - var(--wrap)) / 2));
+  padding-top: calc(12px + env(safe-area-inset-top, 0px)); /* celulares com recorte de câmera */
+  transition: background .35s, box-shadow .35s;
+  color: var(--forest);
+}
+.site-header nav { margin-left: auto; }
+.site-header.solid { background: rgba(245, 239, 228, .94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--line); }
+.brand { display: inline-flex; align-items: center; gap: .55rem; min-height: 48px; text-decoration: none; font: 700 1.35rem/1 var(--sans); letter-spacing: -.01em; color: var(--forest); }
+.brand-sun { width: 30px; height: 30px; color: var(--wood-soft); }
+.site-header nav ul { display: flex; align-items: center; gap: 1.4rem; }
+/* links com área de toque de 48px de altura (mais fácil para quem tem tremor ou pouca precisão) */
+.site-header nav a { display: inline-block; text-decoration: none; font-weight: 700; font-size: .95rem; padding: .8rem .1rem; background: linear-gradient(currentColor, currentColor) 0 calc(100% - .6rem) / 0 1.5px no-repeat; transition: background-size .3s; }
+.site-header nav a:hover { background-size: 100% 1.5px; }
+.site-header nav .menu-cta a { background: var(--forest); color: var(--cream); padding: .8rem 1.3rem; border-radius: 999px; }
+.site-header nav .menu-cta a:hover { background: var(--forest-2); }
+.nav-toggle { display: none; }
+
+/* ---------- Acessibilidade (botão no topo + painel) ---------- */
+.a11y { flex: none; }
+.a11y-toggle {
+  display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid rgba(36, 56, 43, .3);
+  background: rgba(245, 239, 228, .9); color: var(--forest); cursor: pointer; padding: 0;
+}
+.a11y-toggle svg { width: 28px; height: 28px; }
+.a11y-toggle[aria-expanded="true"] { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+.a11y-panel {
+  position: fixed; z-index: 60; top: calc(76px + env(safe-area-inset-top, 0px)); right: max(16px, calc((100vw - var(--wrap)) / 2));
+  width: min(380px, calc(100vw - 32px)); max-height: calc(100vh - 92px); max-height: calc(100svh - 92px); overflow-y: auto; overscroll-behavior: contain;
+  display: grid; gap: 10px; padding: 16px; background: var(--cream); color: var(--ink);
+  border-radius: var(--radius); box-shadow: 0 20px 50px rgba(36, 56, 43, .22);
+}
+.a11y-panel[hidden] { display: none; }
+.a11y-title { margin: 0; padding: .35rem .3rem .2rem; font: 800 .8rem/1.2 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--bamboo-deep); }
+.a11y-opt {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; min-height: 72px;
+  padding: 12px 16px; border: 2px solid transparent; border-radius: 16px; background: var(--cream-2);
+  color: var(--forest); text-align: left; font: inherit; cursor: pointer;
+}
+.a11y-opt strong { display: block; font-weight: 800; font-size: 1.05rem; line-height: 1.3; }
+.a11y-opt small { display: block; color: var(--muted); font-size: .9rem; line-height: 1.35; margin-top: .15rem; }
+.switch { flex: none; position: relative; width: 58px; height: 34px; border-radius: 999px; background: #B9AC94; transition: background .2s; }
+.switch::after { content: ""; position: absolute; top: 4px; left: 4px; width: 26px; height: 26px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); transition: transform .2s; }
+.a11y-opt[aria-checked="true"] { border-color: var(--forest); background: var(--mint); }
+.a11y-opt[aria-checked="true"] .switch { background: var(--forest); }
+.a11y-opt[aria-checked="true"] .switch::after { transform: translateX(24px); }
+.a11y-done { width: 100%; margin-top: 4px; min-height: 52px; }
+
+@media (max-width: 920px) {
+  .site-header nav { order: 3; margin-left: 0; }
+  .a11y { margin-left: auto; }
+  .nav-toggle {
+    display: grid; place-items: center; width: 48px; height: 48px; border: 0; border-radius: 50%;
+    background: rgba(245, 239, 228, .85); color: var(--forest); cursor: pointer;
+  }
+  .bars, .bars::before, .bars::after { display: block; width: 20px; height: 2px; background: currentColor; border-radius: 2px; position: relative; transition: transform .3s, opacity .3s; }
+  .bars::before, .bars::after { content: ""; position: absolute; left: 0; }
+  .bars::before { top: -6px; } .bars::after { top: 6px; }
+  .nav-toggle[aria-expanded="true"] .bars { background: transparent; }
+  .nav-toggle[aria-expanded="true"] .bars::before { transform: translateY(6px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .bars::after { transform: translateY(-6px) rotate(-45deg); }
+  .site-header nav ul {
+    position: fixed; top: calc(74px + env(safe-area-inset-top, 0px)); right: 16px; left: 16px; flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--cream); border-radius: var(--radius); padding: .6rem 1.2rem 1rem;
+    box-shadow: 0 20px 50px rgba(36, 56, 43, .18);
+    opacity: 0; visibility: hidden; transform: translateY(-8px); transition: .25s;
+    /* celular deitado: o menu rola em vez de ser cortado */
+    max-height: calc(100vh - 90px); max-height: calc(100svh - 90px); overflow-y: auto; overscroll-behavior: contain;
+  }
+  .site-header nav ul.open { opacity: 1; visibility: visible; transform: none; }
+  .site-header nav li + li { border-top: 1px solid var(--line); }
+  .site-header nav a { display: block; padding: 1rem 0; font-size: 1.08rem; background: none; }
+  .site-header nav .menu-cta { border-top: 0; margin-top: .6rem; }
+  .site-header nav .menu-cta a { text-align: center; padding: .9rem; }
+}
+
+/* ---------- Abertura ---------- */
+/* Rolagem única: a abertura ocupa uma tela só; a animação toca sozinha depois de um gesto (hero.js) */
+.hero { position: relative; height: 100vh; height: calc(100svh - env(safe-area-inset-top, 0px)); background: var(--cream); }
+.hero-sticky { position: sticky; top: 0; height: 100vh; height: calc(100svh - env(safe-area-inset-top, 0px)); overflow: hidden; }
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(closest-side at 50% 50%, #E7DCCE 0%, rgba(231, 220, 206, .9) 45%, rgba(231, 220, 206, 0) 100%),
+    radial-gradient(60% 50% at 78% 14%, rgba(255, 240, 210, .9), transparent 70%),
+    radial-gradient(70% 60% at 16% 92%, rgba(195, 208, 184, .9), transparent 70%),
+    linear-gradient(170deg, #E9EEDF 0%, #EFE7D7 55%, #E6D8C2 100%);
+}
+.hero-bamboo { position: absolute; height: 120%; width: auto; top: -10%; opacity: .45; pointer-events: none; }
+.hb-1 { left: max(-30px, calc(50% - 640px)); transform: rotate(-4deg); }
+.hb-2 { left: max(30px, calc(50% - 570px)); height: 100%; top: 6%; opacity: .28; transform: rotate(3deg); }
+.hb-3 { right: max(-20px, calc(50% - 660px)); transform: rotate(5deg) scaleX(-1); opacity: .38; }
+.hero-model { position: absolute; inset: 0; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; opacity: 0; transition: opacity 1s; }
+.ready .hero-model { opacity: 1; }
+.hero-model.grabbing { cursor: grabbing; }
+.hero-video {
+  position: absolute; left: 50%; top: 50%;
+  width: var(--s, 90vh); height: var(--s, 90vh); max-width: none; object-fit: cover;
+  margin-left: calc(var(--s, 90vh) / -2); margin-top: calc(var(--s, 90vh) / -2);
+  transform-origin: 50% 7.5%; will-change: transform;
+  -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 62%, transparent 100%);
+  pointer-events: none;
+}
+
+.hero-copy { position: absolute; z-index: 3; pointer-events: none; }
+.stage { opacity: 0; will-change: opacity, transform; }
+.stage-1 { opacity: 1; left: max(16px, calc((100vw - var(--wrap)) / 2)); bottom: 12vh; max-width: 30rem; }
+.stage-1 h1 {
+  font-family: var(--serif); font-weight: 300; font-size: clamp(3.6rem, 11vw, 8.5rem); line-height: .9; letter-spacing: -.04em; color: var(--forest);
+  font-variation-settings: "opsz" 144;
+}
+.stage-1 h1 span { font-style: italic; color: var(--wood-soft); }
+.lede { font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: var(--forest-2); margin-top: 1.2rem; max-width: 28ch; }
+.scroll-hint { display: inline-flex; align-items: center; gap: .7rem; font-size: .82rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 800; color: var(--forest-2); margin-top: 1.4rem; }
+.mouse { width: 20px; height: 32px; border: 2px solid currentColor; border-radius: 12px; position: relative; }
+.mouse::after { content: ""; position: absolute; left: 50%; top: 6px; width: 3px; height: 7px; margin-left: -1.5px; background: currentColor; border-radius: 2px; animation: wheel 1.8s infinite; }
+@keyframes wheel { 0% { opacity: 1; transform: none; } 80% { opacity: 0; transform: translateY(9px); } 100% { opacity: 0; } }
+.stage-2 { right: max(16px, calc((100vw - var(--wrap)) / 2)); top: 50%; transform: translateY(-50%); max-width: 22rem; text-align: right; }
+.stage-3 { left: 0; right: 0; top: 14vh; text-align: center; }
+.stage-big { font-family: var(--serif); font-weight: 300; font-size: clamp(2.2rem, 5.5vw, 4.6rem); line-height: 1; color: var(--forest); margin: 0 0 .8rem; letter-spacing: -.02em; }
+.stage-small { color: var(--forest-2); font-size: 1.05rem; }
+.drag-hint {
+  position: absolute; z-index: 3; right: max(16px, calc((100vw - var(--wrap)) / 2)); bottom: 12vh; margin: 0;
+  font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 800; color: var(--forest-2); opacity: .8;
+}
+.hero-veil { position: absolute; inset: 0; z-index: 4; pointer-events: none; background: var(--cream); clip-path: circle(0% at 50% 50%); }
+/* botão grande para entrar sem precisar rolar */
+.skip-intro {
+  position: absolute; z-index: 5; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  display: inline-flex; align-items: center; justify-content: center; gap: .55rem; min-height: 52px;
+  font: 800 1rem/1 var(--sans); color: var(--cream); background: var(--forest); text-decoration: none; white-space: nowrap;
+  padding: .9rem 1.6rem; border-radius: 999px; box-shadow: 0 12px 28px rgba(36, 56, 43, .28);
+}
+.skip-intro::after { content: "↓"; }
+.skip-intro:hover { background: var(--forest-2); }
+.intro-playing .hero-model { cursor: default; }
+.hero-fallback { display: none; }
+
+.no-3d .hero { height: auto; }
+.no-3d .hero-sticky { position: relative; height: auto; min-height: 100svh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 32px; padding: 110px max(16px, calc((100vw - var(--wrap)) / 2)) 60px; }
+.no-3d .hero-model, .no-3d .stage-2, .no-3d .stage-3, .no-3d .drag-hint, .no-3d .hero-veil, .no-3d .skip-intro, .no-3d .scroll-hint { display: none; }
+.no-3d .hero-copy { position: relative; left: auto; right: auto; bottom: auto; grid-row: 1; grid-column: 1; }
+.no-3d .hero-fallback { display: block; position: relative; z-index: 1; grid-column: 2; }
+.no-3d .hero-fallback img { border-radius: 240px 240px var(--radius) var(--radius); box-shadow: 0 30px 60px rgba(36, 56, 43, .2); }
+@media (max-width: 800px) {
+  .no-3d .hero-sticky { grid-template-columns: 1fr; padding-top: 96px; }
+  .no-3d .hero-fallback { grid-column: 1; grid-row: 2; }
+}
+@media (max-width: 700px) {
+  /* o texto fica acima do botão "Entrar no site" (16px + 52px de altura) */
+  .stage-1 { bottom: calc(92px + env(safe-area-inset-bottom, 0px)); right: 16px; }
+  .stage-2 { left: 16px; right: 16px; top: auto; bottom: calc(92px + env(safe-area-inset-bottom, 0px)); transform: none; text-align: left; }
+  .stage-3 { top: 12vh; }
+  .drag-hint { display: none; }
+  .skip-intro { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+  .hero-bamboo { opacity: .28; }
+  /* véu claro atrás do texto: começa logo acima do bloco de texto (--copy-top vem do hero.js) */
+  .has-3d .hero-sticky::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; top: calc(var(--copy-top, 48%) - 90px); z-index: 2; pointer-events: none;
+    background: linear-gradient(180deg, rgba(240, 233, 219, 0) 0, rgba(240, 233, 219, .86) 90px, rgba(240, 233, 219, .94) 100%);
+    opacity: var(--shade, 1);
+  }
+  .stage-1 .eyebrow { margin-bottom: .7rem; }
+  .stage-1 h1 { font-size: clamp(3rem, 16vw, 5rem); }
+  .lede { font-size: 1rem; margin-top: .7rem; }
+  .scroll-hint { margin-top: .9rem; }
+  .stage-big { font-size: clamp(2rem, 10vw, 3rem); }
+}
+/* celulares baixos (ex.: 320×568): menos texto na abertura para sobrar espaço ao frasco */
+@media (max-width: 700px) and (max-height: 640px) {
+  .scroll-hint { display: none; }
+  .stage-1 h1 { font-size: clamp(2.8rem, 14vw, 4rem); }
+}
+/* celular deitado */
+@media (max-height: 500px) and (orientation: landscape) {
+  .site-header { padding-top: calc(8px + env(safe-area-inset-top, 0px)); padding-bottom: 8px; }
+  .stage-1 { bottom: 78px; max-width: 46%; }
+  .stage-1 .eyebrow { margin-bottom: .4rem; }
+  .stage-1 h1 { font-size: clamp(2.4rem, 14vh, 4rem); }
+  .lede { font-size: .98rem; margin-top: .4rem; }
+  .scroll-hint { display: none; }
+  .stage-2 { max-width: 40%; }
+  .stage-3 { top: 76px; }
+  .drag-hint { bottom: 24px; }
+  .skip-intro { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+  .no-3d .hero-sticky { min-height: 0; padding-top: 80px; grid-template-columns: 1fr 1fr; }
+  .no-3d .hero-fallback { grid-column: 2; grid-row: 1; }
+}
+
+/* ---------- Seções (base) ---------- */
+section { position: relative; }
+.photo-card img, .intro-photo img, .refil-photo img, .inc-photos img, .anat-figure img { width: 100%; border-radius: var(--radius); }
+
+/* ---------- Início ---------- */
+.intro { padding: clamp(84px, 10vw, 140px) 0 var(--space); outline: none; }
+.intro-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+.intro-text { font-size: 1.1rem; color: var(--muted); }
+.intro-text .display { margin-bottom: 1.4rem; }
+.intro-text strong { color: var(--forest); font-weight: 800; }
+.intro-text blockquote {
+  margin: 1.4rem 0; padding: .2rem 0 .2rem 1.3rem; border-left: 3px solid var(--bamboo);
+  font-family: var(--serif); font-style: italic; font-size: 1.32rem; line-height: 1.38; color: var(--forest);
+}
+.intro-photo { position: relative; }
+.intro-photo img { aspect-ratio: 4 / 5; object-fit: cover; box-shadow: var(--shadow); }
+.intro-photo figcaption {
+  position: absolute; left: 16px; right: 16px; bottom: 16px; padding: .8rem 1rem; border-radius: 14px;
+  background: rgba(251, 248, 242, .92); color: var(--forest); font-weight: 700; font-size: .95rem; line-height: 1.4;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.status-pill {
+  display: inline-flex; align-items: center; gap: .55rem; margin-bottom: 1.3rem;
+  background: var(--mint); color: var(--bamboo-deep); font-weight: 800; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+  padding: .5rem .95rem; border-radius: 999px;
+}
+.status-pill span { width: 8px; height: 8px; border-radius: 50%; background: var(--bamboo-deep); box-shadow: 0 0 0 4px rgba(95, 122, 58, .2); }
+.pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(56px, 7vw, 96px); border-top: 1px solid var(--line); }
+.pillars li { display: grid; grid-template-columns: 48px 1fr; column-gap: 16px; align-content: start; padding: 30px 28px 6px 0; }
+.pillars li + li { padding-left: 28px; border-left: 1px solid var(--line); }
+.pillars svg { grid-row: span 2; width: 48px; height: 48px; padding: 10px; border-radius: 50%; background: var(--mint); color: var(--bamboo-deep); }
+.pillars strong { font-size: 1.12rem; color: var(--forest); line-height: 1.3; }
+.pillars span { color: var(--muted); font-size: .98rem; margin-top: .25rem; }
+
+/* ---------- Produto ---------- */
+.produto { padding: var(--space) 0; background: var(--paper); border-block: 1px solid var(--line); }
+.produto-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+.produto-photo img { aspect-ratio: 4 / 5; object-fit: cover; box-shadow: var(--shadow); }
+.produto-copy > p { color: var(--muted); max-width: 46ch; margin-top: 1.2rem; }
+.produto-copy strong { color: var(--forest); }
+.steps { counter-reset: s; display: grid; margin-top: 1.8rem; }
+.steps li { display: grid; grid-template-columns: 52px 1fr; gap: 18px; align-items: start; padding: 18px 0; border-top: 1px solid var(--line); }
+.steps svg { width: 52px; height: 52px; padding: 10px; border-radius: 50%; background: var(--mint); color: var(--bamboo-deep); }
+.steps h3 { font: 800 1.05rem/1.3 var(--sans); color: var(--forest); counter-increment: s; }
+.steps h3::before { content: counter(s) ". "; color: var(--wood); }
+.steps p { margin: .25rem 0 0; color: var(--muted); font-size: .98rem; }
+
+.publico { margin-top: clamp(64px, 8vw, 110px); display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 5vw, 70px); align-items: center; background: var(--cream); border: 1px solid var(--line); border-radius: 28px; padding: clamp(28px, 4vw, 52px); }
+.publico-copy p { color: var(--muted); margin: 0; }
+.tags { display: flex; flex-wrap: wrap; gap: 10px; }
+.tags li { background: var(--paper); border: 1.5px solid rgba(95, 122, 58, .3); color: var(--forest); padding: .55rem 1rem; border-radius: 999px; font-weight: 700; font-size: .95rem; }
+.tags .tag-all { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+
+/* ---------- Conheça o frasco ---------- */
+.anatomia { padding: var(--space) 0; }
+.anat-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+.anat-figure { position: relative; max-width: 520px; width: 100%; justify-self: center; }
+.anat-figure img { aspect-ratio: 4 / 5; object-fit: cover; box-shadow: var(--shadow); }
+.hotspot {
+  position: absolute; z-index: 1; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%;
+  display: grid; place-items: center; font: 800 1rem/1 var(--sans); color: var(--cream); background: var(--forest);
+  box-shadow: 0 0 0 6px rgba(251, 248, 242, .75), 0 8px 18px rgba(36, 56, 43, .3);
+}
+.hs-1 { left: 50%; top: 10%; }
+.hs-2 { left: 69%; top: 41%; }
+.hs-3 { left: 63%; top: 65%; }
+.hs-4 { left: 50%; top: 88%; }
+.anat-copy .display { margin-bottom: 1.8rem; }
+.anat-list { display: grid; }
+.anat-list li { display: grid; grid-template-columns: 44px 1fr; gap: 18px; align-items: start; padding: 18px 0; border-top: 1px solid var(--line); }
+.anat-list .num { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font: 800 1.05rem/1 var(--sans); color: var(--forest); background: var(--mint); }
+.anat-list h3 { font: 800 1.08rem/1.3 var(--sans); color: var(--forest); }
+.anat-list p { margin: .25rem 0 0; color: var(--muted); font-size: .98rem; }
+
+/* ---------- Diferenciais ---------- */
+.diferenciais { padding: var(--space) 0; background: var(--mint-2); }
+.dif-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.dif-grid li { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px; }
+.dif-grid li > svg { width: 48px; height: 48px; padding: 10px; border-radius: 50%; background: var(--mint); color: var(--bamboo-deep); margin-bottom: 1.1rem; }
+.dif-grid h3 { font: 800 1.05rem/1.3 var(--sans); color: var(--forest); margin-bottom: .4rem; }
+.dif-grid p { margin: 0; color: var(--muted); font-size: .96rem; }
+/* cartão com foto ocupa 2 colunas: 2 + 2 pequenos na 1ª linha, 4 pequenos na 2ª (sem buracos) */
+.dif-grid .dif-feature { grid-column: span 2; padding: 0; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; background: var(--forest); border-color: var(--forest); color: var(--cream); }
+.dif-feature picture, .dif-feature img { width: 100%; height: 100%; object-fit: cover; }
+.dif-feature > div { padding: 30px 28px; align-self: end; }
+.dif-feature h3 { color: var(--cream); font-family: var(--serif); font-weight: 300; font-size: 1.9rem; line-height: 1.1; margin-bottom: .7rem; }
+.dif-feature p { color: rgba(245, 239, 228, .82); }
+
+/* ---------- Galeria (mosaico) ---------- */
+.galeria { padding: var(--space) 0; }
+.gal-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: clamp(170px, 19vw, 250px); grid-auto-flow: dense; gap: 14px; }
+.gal-grid li { min-width: 0; }
+.gal-grid .g-tall { grid-row: span 2; }
+.gal-grid .g-wide { grid-column: span 2; }
+.gal-grid .g-big { grid-column: span 2; grid-row: span 2; }
+.gal-grid figure { position: relative; height: 100%; border-radius: var(--radius-sm); overflow: hidden; background: var(--sand); }
+.gal-grid picture, .gal-grid img, .gal-grid video { width: 100%; height: 100%; object-fit: cover; }
+.gal-grid img { transition: transform .8s cubic-bezier(.2, .8, .2, 1); }
+.gal-grid figcaption {
+  position: absolute; left: 12px; bottom: 12px; max-width: calc(100% - 24px); padding: .42rem .8rem; border-radius: 999px;
+  background: rgba(251, 248, 242, .92); color: var(--forest); font-weight: 700; font-size: .85rem; line-height: 1.3;
+}
+@media (hover: hover) { .gal-grid figure:hover img { transform: scale(1.04); } }
+.video-card { position: relative; background: var(--sand); }
+.video-card video { width: 100%; height: 100%; object-fit: cover; }
+.video-card.broken video { display: none; }
+.video-card.broken { background-size: cover; background-position: center; }
+
+/* ---------- Sustentabilidade ---------- */
+.sustentabilidade { padding: var(--space) 0; background: var(--mint); }
+.sustentabilidade .section-head { max-width: 680px; }
+.materiais { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 14px; }
+.mat { background: var(--paper); border-radius: var(--radius); padding: 26px 24px; }
+.mat h3 { font: 800 1.1rem/1.3 var(--sans); color: var(--forest); margin: 1rem 0 .4rem; }
+.mat p { margin: 0; color: var(--muted); font-size: .96rem; }
+.mat-icon { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; background: var(--mint); color: var(--bamboo-deep); }
+.mat-icon svg { width: 32px; height: 32px; }
+.mat-bamboo { background: linear-gradient(160deg, #F3E3C3, #E6CC9D); }
+.bamboo-wall {
+  height: 110px; border-radius: 14px; margin: -4px -4px 0;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 34px, rgba(110, 72, 34, .5) 34px 37px, transparent 37px 72px),
+    repeating-linear-gradient(90deg, #C99A5F 0, #E7C893 6px, #D6AE72 14px, #B4844C 20px, #8E6638 22px);
+  box-shadow: inset 0 0 0 1px rgba(110, 72, 34, .2);
+}
+.refil { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(28px, 5vw, 72px); align-items: center; margin-top: clamp(64px, 8vw, 110px); }
+.refil-photo img { box-shadow: var(--shadow); }
+.refil-copy p:not(.eyebrow) { color: var(--muted); max-width: 40ch; }
+
+/* ---------- Formulação ---------- */
+.ingredientes { padding: var(--space) 0; background: var(--forest); color: var(--cream); }
+.ingredientes .display { color: var(--cream); }
+.ingredientes .display em { color: #E3C18F; }
+.ingredientes .eyebrow { color: var(--sage); }
+.ingredientes .lead-text { color: rgba(245, 239, 228, .78); }
+.ing-list { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(14px, 2.4vw, 30px); }
+.ing-list li { display: grid; justify-items: center; align-content: start; gap: 1rem; text-align: center; font-weight: 700; font-size: 1rem; }
+.ing-list svg { width: min(140px, 100%); transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
+.ing-list li:hover svg { transform: translateY(-6px) rotate(-4deg); }
+.ing-list li:nth-child(1) { --c: #CFE0E4; }
+.ing-list li:nth-child(2) { --c: #ECE8E0; }
+.ing-list li:nth-child(3) { --c: #E5EBD2; }
+.ing-list li:nth-child(4) { --c: #EED9BE; }
+.ing-list li:nth-child(5) { --c: #E9D3C3; }
+.ing-list li:nth-child(6) { --c: #F0D98C; }
+.ing-bg { fill: rgba(245, 239, 228, .08); stroke: rgba(245, 239, 228, .25); stroke-width: 1; }
+.ing-fill { fill: var(--c); }
+.ing-cut { fill: #FBF7EF; }
+.ing-dot { fill: #6F4C2E; }
+.ing-line { fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; opacity: .75; }
+.ing-list li:nth-child(2) .ing-line, .ing-list li:nth-child(4) .ing-line { stroke: #9A7B57; opacity: .6; stroke-width: 2; }
+.ing-more { text-align: center; margin: 3rem 0 .6rem; font-family: var(--serif); font-style: italic; font-size: 1.25rem; color: var(--sage); }
+.ing-note { text-align: center; margin: 0 auto; max-width: 56ch; font-size: .92rem; color: rgba(245, 239, 228, .7); }
+
+/* ---------- Inclusão: faixa com foto + detalhes ---------- */
+.inclusao { padding: 0 0 var(--space); }
+.band { position: relative; min-height: clamp(460px, 56vw, 680px); display: grid; align-items: center; overflow: hidden; background: var(--forest); }
+.band-photo, .band-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; }
+.band::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(24, 38, 29, .9) 0%, rgba(24, 38, 29, .72) 38%, rgba(24, 38, 29, 0) 70%); }
+.band-copy { position: relative; z-index: 1; width: 100%; padding-block: 64px; }
+.band-copy .wrap > * { max-width: 34rem; }
+.band-copy .eyebrow { color: var(--sage); }
+.band-copy .display { color: var(--cream); font-size: clamp(2rem, 4vw, 3.3rem); }
+.band-copy .display em { color: #E8C99A; }
+.band-copy p:not(.eyebrow) { color: rgba(245, 239, 228, .88); font-size: 1.1rem; margin: 1.3rem 0 0; }
+.inc-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: center; margin-top: var(--space); }
+.inc-photos { position: relative; padding-bottom: 16%; }
+.inc-a img { box-shadow: var(--shadow); }
+.inc-b { position: absolute; right: -4%; bottom: -4%; width: 34%; }
+.inc-b img { border: 6px solid var(--cream); box-shadow: 0 20px 40px rgba(36, 56, 43, .2); }
+.checks { display: grid; gap: .85rem; margin: 1.4rem 0 1.6rem; }
+.checks li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; color: var(--forest); font-weight: 600; }
+.checks svg, .offer-list svg { width: 26px; height: 26px; padding: 4px; border-radius: 50%; background: var(--bamboo); color: #fff; }
+.small-note { font-size: .94rem; color: var(--muted); background: var(--paper); border: 1px solid var(--line); padding: .9rem 1.1rem; border-radius: 14px; }
+
+/* ---------- Comprar ---------- */
+.comprar { padding: var(--space) 0; background: linear-gradient(180deg, var(--cream-2), var(--cream) 60%); }
+.offers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+.offer { position: relative; display: flex; flex-direction: column; background: var(--paper); border-radius: 26px; overflow: hidden; box-shadow: 0 18px 46px rgba(36, 56, 43, .09); border: 1px solid var(--line); }
+.offer-media { aspect-ratio: 4 / 3; overflow: hidden; background: var(--sand); }
+.offer-media picture, .offer-media img { width: 100%; height: 100%; object-fit: cover; }
+.offer-body { display: flex; flex-direction: column; padding: 26px 26px 28px; flex: 1; }
+.offer h3 { font-family: var(--serif); font-weight: 400; font-size: 1.7rem; color: var(--forest); line-height: 1.1; }
+.offer-desc { color: var(--muted); margin: .6rem 0 1.1rem; }
+.offer-list { display: grid; gap: .6rem; margin-bottom: 1.5rem; padding-top: 1.1rem; border-top: 1px solid var(--line); }
+.offer-list li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; font-size: .96rem; color: var(--forest); }
+.offer-list li.offer-save { font-weight: 800; color: var(--bamboo-deep); }
+.offer-price { margin: auto 0 1rem; font: 600 1.75rem/1 var(--serif); color: var(--forest); }
+.btn-buy { width: 100%; padding: 1.05rem 1.2rem; font-size: 1.02rem; }
+.offer-highlight { border: 2px solid var(--bamboo-deep); transform: translateY(-10px); box-shadow: 0 26px 60px rgba(36, 56, 43, .16); }
+.offer-highlight .btn-buy { background: var(--bamboo-deep); border-color: var(--bamboo-deep); }
+.offer-highlight .btn-buy:hover { background: var(--forest); border-color: var(--forest); }
+.offer-badge { position: absolute; z-index: 2; top: 14px; left: 14px; margin: 0; background: var(--bamboo-deep); color: #fff; font-weight: 800; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; padding: .45rem .8rem; border-radius: 999px; }
+.img-note { margin: 26px auto 0; text-align: center; color: var(--muted); font-size: .88rem; max-width: 72ch; }
+
+/* ---------- Ficha técnica ---------- */
+.specs { padding: var(--space) 0; background: var(--blush); }
+/* visão técnica (desenho explodido) */
+.tec-figure { max-width: 880px; margin: 0 auto clamp(44px, 6vw, 72px); }
+.tec-image { display: block; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); background: #EEF2F4; }
+.tec-image img { width: 100%; transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
+@media (hover: hover) { .tec-image:hover img { transform: scale(1.015); } }
+.tec-figure figcaption { display: grid; justify-items: center; gap: 14px; margin-top: 18px; text-align: center; color: var(--muted); font-size: .95rem; }
+.tec-figure figcaption span { max-width: 62ch; }
+.spec-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; }
+.spec-list > div { background: var(--paper); border-radius: 18px; padding: 20px 22px; min-height: 112px; display: flex; flex-direction: column; justify-content: space-between; }
+.spec-list dt { font-weight: 800; color: var(--muted); font-size: .9rem; }
+.spec-list dd { margin: .8rem 0 0; font-family: var(--serif); font-size: 1.35rem; color: var(--forest); line-height: 1.2; }
+.spec-list > .spec-next {
+  grid-column: 1 / -1; background: var(--forest); color: var(--cream); min-height: 0;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); gap: 16px 32px; align-items: center; padding: 28px 30px;
+}
+.spec-next dt { color: var(--cream); font-family: var(--serif); font-weight: 300; font-size: 1.7rem; }
+.spec-next dd { margin: 0; font-family: var(--sans); font-size: 1rem; color: rgba(245, 239, 228, .82); }
+.spec-next p { margin: 0 0 .8rem; }
+.spec-next ul { display: flex; flex-wrap: wrap; gap: 8px; }
+.spec-next li { background: rgba(245, 239, 228, .1); border: 1px solid rgba(245, 239, 228, .25); color: var(--cream); padding: .4rem .85rem; border-radius: 999px; font-weight: 700; font-size: .92rem; }
+.spec-status { display: block; font-family: var(--sans); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--bamboo-deep); margin-top: .35rem; }
+
+/* ---------- FAQ ---------- */
+.faq { padding: var(--space) 0; }
+.faq-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
+.faq-list { border-top: 1px solid var(--line); }
+.faq-list details { border-bottom: 1px solid var(--line); }
+.faq-list summary {
+  cursor: pointer; list-style: none; padding: 1.25rem 3rem 1.25rem 0; position: relative;
+  font-weight: 800; font-size: 1.08rem; color: var(--forest);
+}
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after {
+  content: ""; position: absolute; right: 4px; top: 50%; width: 30px; height: 30px; margin-top: -15px; border-radius: 50%;
+  background: var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M6 11h10M11 6v10' stroke='%235F7A3A' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / 22px no-repeat;
+  transition: transform .3s;
+}
+.faq-list details[open] summary::after { transform: rotate(45deg); }
+.faq-list details p { color: var(--muted); padding: 0 3rem 1.3rem 0; margin: 0; }
+
+/* ---------- Contato ---------- */
+.contato { padding: 0 0 var(--space); }
+.contato-box { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 48px; align-items: center; background: var(--paper); border: 1px solid var(--line); border-radius: 28px; padding: clamp(28px, 5vw, 56px); }
+.contato-box p:not(.eyebrow) { color: var(--muted); margin: 0; }
+.contact-list { display: grid; gap: 10px; }
+.contact-list li { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 60px; background: var(--cream); padding: 14px 18px; border-radius: 14px; }
+.c-label { font-weight: 800; color: var(--forest); }
+.contact-list a { font-weight: 700; color: var(--bamboo-deep); }
+/* o cartão inteiro do contato é clicável (alvo grande) */
+.contact-list a::after { content: ""; position: absolute; inset: 0; border-radius: 14px; }
+.contact-list li:has(a):hover { background: #fff; }
+
+/* ---------- Rodapé ---------- */
+.site-footer { background: var(--forest); color: var(--sand); }
+.footer-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; padding: clamp(56px, 7vw, 84px) 0 clamp(40px, 5vw, 56px); border-bottom: 1px solid rgba(245, 239, 228, .14); }
+.footer-statement { margin: 0; max-width: 18ch; font: 300 clamp(1.9rem, 3.6vw, 2.9rem)/1.1 var(--serif); font-variation-settings: "opsz" 144; color: var(--cream); letter-spacing: -.02em; text-wrap: balance; }
+.footer-statement em { font-style: italic; color: #E8C99A; }
+.footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.6fr; gap: 28px 40px; padding: 44px 0 48px; }
+.site-footer .brand { color: var(--cream); }
+.footer-tag { margin: .6rem 0 0; color: var(--sage); }
+.footer-title { margin: 0 0 .3rem; font: 800 .76rem/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--sage); }
+.site-footer nav ul { display: grid; gap: 0; }
+.site-footer nav a { display: inline-block; padding: .55rem 0; text-decoration: none; font-weight: 600; }
+.site-footer nav a:hover { text-decoration: underline; }
+.footer-legal { margin: 0; font-size: .88rem; color: rgba(229, 215, 192, .8); }
+
+/* ---------- Aviso de compra ---------- */
+.buy-dialog { border: 0; padding: 0; border-radius: 26px; width: min(460px, calc(100% - 32px)); max-height: calc(100vh - 32px); max-height: calc(100svh - 32px); overflow-y: auto; overscroll-behavior: contain; background: var(--cream); color: var(--ink); box-shadow: 0 40px 90px rgba(0, 0, 0, .3); }
+.buy-dialog::backdrop { background: rgba(36, 56, 43, .55); backdrop-filter: blur(3px); }
+.buy-dialog form { padding: 34px 30px 28px; position: relative; }
+.dialog-close { position: absolute; right: 12px; top: 12px; width: 50px; height: 50px; border: 0; border-radius: 50%; background: var(--cream-2); font-size: 1.5rem; line-height: 1; cursor: pointer; color: var(--forest); }
+.dialog-sun { width: 48px; height: 48px; color: var(--wood-soft); margin-bottom: 1rem; }
+.buy-dialog h2 { font-family: var(--serif); font-size: 1.9rem; line-height: 1.15; color: var(--forest); margin-bottom: .8rem; }
+.buy-dialog p { color: var(--muted); }
+.buy-dialog strong { color: var(--forest); }
+.dialog-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.4rem; }
+
+/* ---------- Entrada suave ---------- */
+/* deslocamento curto: botões não "fogem" enquanto a pessoa tenta tocar */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s cubic-bezier(.2, .8, .2, 1); }
+.reveal.in { opacity: 1; transform: none; }
+.offer-highlight.reveal.in { transform: translateY(-10px); }
+
+/* ---------- Toque e coordenação motora ---------- */
+/* sem atraso nem zoom por toque duplo acidental (comum com tremor); o zoom de pinça continua livre */
+a, button, summary, [role="switch"] { touch-action: manipulation; }
+/* retorno visual ao tocar: a pessoa vê que o toque foi registrado */
+.btn:active, .a11y-opt:active, .a11y-toggle:active, .nav-toggle:active, .dialog-close:active { transform: scale(.96); }
+.faq-list summary:active, .contact-list li:active { background-color: var(--cream-2); }
+.skip-intro:active { transform: translateX(-50%) scale(.96); }
+
+/* "Menos movimento" (painel de acessibilidade) */
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after { animation: none !important; transition: none !important; }
+.reduce-motion .reveal { opacity: 1; transform: none; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 1080px) {
+  .dif-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .materiais { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ing-list { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 36px; }
+  .footer-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .footer-legal { grid-column: 1 / -1; }
+}
+@media (max-width: 900px) {
+  .intro-grid, .produto-grid, .anat-grid, .refil, .inc-grid, .publico, .faq-grid, .contato-box, .section-head.split { grid-template-columns: 1fr; }
+  .intro-photo, .produto-photo { max-width: 520px; width: 100%; justify-self: center; }
+  .pillars { grid-template-columns: 1fr; }
+  .pillars li, .pillars li + li { padding: 24px 0; border-left: 0; }
+  .pillars li + li { border-top: 1px solid var(--line); }
+  .gal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: clamp(150px, 34vw, 260px); }
+  .offers { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
+  .offer-highlight, .offer-highlight.reveal.in { transform: none; }
+  .spec-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .inc-b { right: 0; }
+}
+@media (max-width: 700px) {
+  /* faixa da inclusão: foto em cima, texto embaixo sobre o verde (sem texto por cima da foto) */
+  .band { min-height: 0; display: block; }
+  .band-photo { display: block; }
+  .band-photo, .band-photo img { position: static; height: auto; aspect-ratio: 16 / 11; object-position: 72% 50%; }
+  .band::after { content: none; }
+  .band-copy { padding-block: 36px 44px; }
+}
+@media (max-width: 640px) {
+  :root { --space: 64px; }
+  .dif-grid, .materiais { grid-template-columns: 1fr; }
+  .dif-grid .dif-feature { grid-column: auto; grid-row: auto; grid-template-columns: 1fr; }
+  .dif-feature picture { aspect-ratio: 4 / 3; }
+  .dif-feature img { object-position: 50% 60%; }
+  .ing-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .spec-list { grid-template-columns: 1fr; }
+  .spec-list > div { min-height: 0; }
+  .spec-list > .spec-next { grid-template-columns: 1fr; }
+  /* rodapé: os dois menus lado a lado */
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
+  .footer-grid > div:first-child, .footer-legal { grid-column: 1 / -1; }
+
+  /* cartões pequenos com o ícone ao lado do texto (página mais curta no celular) */
+  .dif-grid li:not(.dif-feature), .mat:not(.mat-bamboo) { display: grid; grid-template-columns: 48px 1fr; column-gap: 16px; align-items: start; padding: 20px 18px; }
+  .dif-grid li:not(.dif-feature) > svg { grid-row: span 2; margin: 0; }
+  .mat:not(.mat-bamboo) .mat-icon { grid-row: span 2; width: 48px; height: 48px; }
+  .mat:not(.mat-bamboo) .mat-icon svg { width: 28px; height: 28px; }
+  .mat:not(.mat-bamboo) h3 { margin: 0 0 .3rem; }
+  .mat-bamboo { padding: 20px 18px; }
+  .bamboo-wall { height: 80px; }
+  .contact-list li { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .cta-row .btn { flex: 1 1 100%; }
+
+  .intro { padding-top: 72px; }
+  .section-head { margin-bottom: 32px; }
+  .pillars { margin-top: 40px; }
+  .intro-photo figcaption { font-size: .9rem; left: 12px; right: 12px; bottom: 12px; }
+
+  /* galeria: mosaico de 2 colunas com alturas menores */
+  .gal-grid { gap: 10px; grid-auto-rows: 42vw; }
+  .gal-grid .g-big { grid-column: span 2; grid-row: span 2; }
+  .gal-grid figcaption { font-size: .78rem; left: 8px; bottom: 8px; max-width: calc(100% - 16px); padding: .35rem .65rem; }
+
+  .hotspot { width: 32px; height: 32px; margin: -16px 0 0 -16px; font-size: .9rem; box-shadow: 0 0 0 4px rgba(251, 248, 242, .75), 0 6px 14px rgba(36, 56, 43, .3); }
+  .anat-list li { grid-template-columns: 38px 1fr; gap: 14px; }
+  .anat-list .num { width: 38px; height: 38px; font-size: .95rem; }
+
+  .publico { padding: 24px 20px; }
+  .tags li { font-size: .9rem; padding: .5rem .9rem; }
+  .ing-list li { font-size: .95rem; }
+  .ing-more { margin-top: 2.2rem; }
+  .inc-photos { padding-bottom: 14%; }
+
+  .offer-body { padding: 22px 20px 22px; }
+  .offer h3 { font-size: 1.55rem; }
+
+  /* ficha técnica mais compacta */
+  .spec-list > div { padding: 16px 18px; }
+  .spec-list dd { font-size: 1.2rem; margin-top: .4rem; }
+  .spec-list > .spec-next { padding: 22px 20px; }
+
+  .faq-list summary { font-size: 1.02rem; padding-top: 1.05rem; padding-bottom: 1.05rem; }
+  .faq-list details p { padding-right: 0; }
+
+  .contact-list a { overflow-wrap: anywhere; padding: .2rem 0; }
+  .footer-top .btn { flex: 1 1 100%; }
+
+  /* aviso de compra */
+  .buy-dialog form { padding: 28px 22px 22px; }
+  .buy-dialog h2 { font-size: 1.6rem; }
+  .dialog-sun { width: 38px; height: 38px; margin-bottom: .7rem; }
+  .dialog-actions .btn { flex: 1 1 100%; }
+}
+
+/* telas de toque: sem efeito de "hover" preso depois do toque */
+@media (hover: none) {
+  .btn:hover { transform: none; }
+  .ing-list li:hover svg { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+  </style>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%2324382B'/%3E%3Ccircle cx='16' cy='18' r='6' fill='none' stroke='%23F4EEE3' stroke-width='2.2'/%3E%3Cg stroke='%23F4EEE3' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M16 5v4M6 18h3M23 18h3M8.5 10.5l2.2 2.2M23.5 10.5l-2.2 2.2'/%3E%3C/g%3E%3C/svg%3E">
+  <script>
+    /* Antes de desenhar: abertura animada ou estática, e preferências salvas pela pessoa (texto maior, menos movimento). */
+    (function () {
+      var d = document.documentElement, pref = null;
+      if (!d.lang) d.lang = 'pt-BR';
+      try { pref = localStorage.getItem('solacess-movimento'); } catch (e) {}
+      var reduce = pref ? pref === 'reduzido' : !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      d.classList.add(reduce ? 'no-3d' : 'has-3d');
+      if (reduce) d.classList.add('reduce-motion');
+      try { if (localStorage.getItem('solacess-texto') === 'grande') d.classList.add('texto-grande'); } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#inicio">Pular para o conteúdo</a>
+
+  <header class="site-header" id="topo">
+    <a class="brand" href="#inicio" aria-label="SolAcess, ir para o início">
+      <svg class="brand-sun" viewBox="0 0 40 40" aria-hidden="true"><use href="#sun"/></svg>
+      <span>SolAcess</span>
+    </a>
+    <nav aria-label="Principal">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="menu">
+        <span class="sr-only">Abrir menu</span><span class="bars" aria-hidden="true"></span>
+      </button>
+      <ul id="menu">
+        <li><a href="#produto">Produto</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+        <li><a href="#sustentabilidade">Bambu</a></li>
+        <li><a href="#inclusao">Inclusão</a></li>
+        <li><a href="#faq">Dúvidas</a></li>
+        <li class="menu-cta"><a href="#comprar">Comprar</a></li>
+      </ul>
+    </nav>
+    <div class="a11y">
+      <button class="a11y-toggle" type="button" aria-expanded="false" aria-controls="a11y-panel" title="Acessibilidade">
+        <svg aria-hidden="true"><use href="#i-a11y"/></svg><span class="sr-only">Acessibilidade</span>
+      </button>
+      <div class="a11y-panel" id="a11y-panel" role="group" aria-labelledby="a11y-title" hidden>
+        <p class="a11y-title" id="a11y-title">Acessibilidade</p>
+        <button class="a11y-opt" type="button" role="switch" aria-checked="false" data-pref="texto">
+          <span><strong>Texto maior</strong><small>Letras e botões maiores.</small></span>
+          <span class="switch" aria-hidden="true"></span>
+        </button>
+        <button class="a11y-opt" type="button" role="switch" aria-checked="false" data-pref="movimento">
+          <span><strong>Menos movimento</strong><small>Sem animações e sem vídeos tocando sozinhos.</small></span>
+          <span class="switch" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-ghost a11y-done" type="button">Pronto</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Ícones e ilustrações reutilizáveis -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="g-bamboo" x1="0" x2="1">
+        <stop offset="0" stop-color="#9DB06E"/><stop offset=".35" stop-color="#C5D08F"/><stop offset=".6" stop-color="#A5B873"/><stop offset="1" stop-color="#7C9254"/>
+      </linearGradient>
+    </defs>
+    <symbol id="sun" viewBox="0 0 40 40">
+      <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+        <circle cx="20" cy="23" r="7.5"/>
+        <path d="M20 4.5v5M4.5 23h5M30.5 23h5M9 12l3.4 3.4M31 12l-3.4 3.4M10.5 32.5l2.5-2.5M29.5 32.5L27 30"/>
+      </g>
+    </symbol>
+    <!-- colmo de bambu verde com nós e folhas (abertura) -->
+    <symbol id="bamboo" viewBox="0 0 120 520">
+      <g>
+        <rect x="46" y="0" width="28" height="520" rx="6" fill="url(#g-bamboo)"/>
+        <g fill="#6E8449">
+          <rect x="43" y="118" width="34" height="7" rx="3.5"/><rect x="43" y="262" width="34" height="7" rx="3.5"/><rect x="43" y="400" width="34" height="7" rx="3.5"/>
+        </g>
+        <g fill="#F4F1DC" opacity=".35"><rect x="51" y="6" width="4" height="108" rx="2"/><rect x="51" y="130" width="4" height="128" rx="2"/><rect x="51" y="274" width="4" height="122" rx="2"/><rect x="51" y="412" width="4" height="104" rx="2"/></g>
+        <g fill="#7E9A55">
+          <path d="M77 120c18-14 30-14 42-10-12 8-24 14-42 10z"/>
+          <path d="M77 122c14 2 26 10 34 22-14-2-26-10-34-22z" fill="#93AE66"/>
+          <path d="M43 264c-18-12-30-12-42-6 12 8 25 12 42 6z"/>
+          <path d="M43 266c-12 6-20 16-24 28 12-4 21-14 24-28z" fill="#93AE66"/>
+          <path d="M77 402c20-8 32-4 42 4-14 4-27 4-42-4z" fill="#93AE66"/>
+        </g>
+      </g>
+    </symbol>
+    <symbol id="i-hand" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 26V12a3 3 0 0 1 6 0v10M22 22V9a3 3 0 0 1 6 0v13M28 22V11a3 3 0 0 1 6 0v15M16 22v-2a3 3 0 0 0-6 0v8c0 9 6 15 14 15s12-6 12-14v-3"/></g></symbol>
+    <symbol id="i-pump" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20h12v22H18z"/><path d="M22 20v-6h4v6M26 14h10v4"/><path d="M20 8h8"/></g></symbol>
+    <symbol id="i-roll" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M16 6h16v22H16z"/><circle cx="24" cy="34" r="8"/><path d="M8 44h32" stroke-dasharray="3 4"/></g></symbol>
+    <symbol id="i-refill" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 8h16l4 6v26H10z"/><path d="M36 22a8 8 0 1 1-4 14M36 22l-1 5M36 22l5 1"/></g></symbol>
+    <symbol id="i-grip" viewBox="0 0 48 48"><g fill="currentColor"><circle cx="17" cy="13" r="2.6"/><circle cx="24" cy="13" r="2.6"/><circle cx="31" cy="13" r="2.6"/><circle cx="17" cy="21" r="2.6"/><circle cx="31" cy="21" r="2.6"/><circle cx="17" cy="29" r="2.6"/><circle cx="24" cy="29" r="2.6"/><circle cx="24" cy="37" r="2.6"/><circle cx="31" cy="37" r="2.6"/></g></symbol>
+    <symbol id="i-leaf" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 38C10 20 22 10 40 8c0 18-10 30-28 30z"/><path d="M10 38l16-16"/></g></symbol>
+    <symbol id="i-people" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="17" cy="16" r="5"/><circle cx="33" cy="18" r="4"/><path d="M7 38c0-7 4-12 10-12s10 5 10 12M27 38c0-5 3-10 7-10s7 4 7 10"/></g></symbol>
+    <symbol id="i-a11y" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10.4"/><circle cx="12" cy="6.9" r="1.5" fill="currentColor" stroke="none"/><path d="M6.6 9.8l5.4 1.3 5.4-1.3M12 11.1v3.4M12 14.5l-2.7 4.4M12 14.5l2.7 4.4"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <main>
+    <!-- ABERTURA: giro de 360° do frasco. Uma rolagem toca a animação inteira (hero.js). -->
+    <section class="hero" id="abertura" aria-labelledby="hero-title">
+      <div class="hero-sticky">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <svg class="hero-bamboo hb-1" viewBox="0 0 120 520" aria-hidden="true"><use href="#bamboo"/></svg>
+        <svg class="hero-bamboo hb-2" viewBox="0 0 120 520" aria-hidden="true"><use href="#bamboo"/></svg>
+        <svg class="hero-bamboo hb-3" viewBox="0 0 120 520" aria-hidden="true"><use href="#bamboo"/></svg>
+        <div class="hero-model" aria-hidden="true">
+          <video class="hero-video" muted loop playsinline preload="none" poster="assets/video/giro-360-poster.jpg">
+            <source src="assets/video/giro-360-hero.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <!-- Alternativa estática (menos movimento ou vídeo indisponível) -->
+        <div class="hero-fallback">
+          <picture>
+            <source srcset="assets/img/produto-folhagem-640.webp 640w, assets/img/produto-folhagem-1264.webp 1264w" sizes="(max-width: 800px) 90vw, 46vw" type="image/webp">
+            <img src="assets/img/produto-folhagem-1264.jpg" width="1264" height="1264" alt="Representação do frasco SolAcess, com estrutura externa de bambu, sobre uma pedra com musgo e folhagem ao fundo.">
+          </picture>
+        </div>
+
+        <div class="hero-copy stage stage-1">
+          <p class="eyebrow">Protetor solar acessível</p>
+          <h1 id="hero-title">Sol<span>Acess</span></h1>
+          <p class="lede">Proteção solar pensada para ser fácil de segurar e de aplicar.</p>
+          <p class="scroll-hint" aria-hidden="true"><span class="mouse"></span>Role uma vez para entrar</p>
+        </div>
+        <div class="hero-copy stage stage-2" aria-hidden="true">
+          <p class="stage-big">Bambu por fora.</p>
+          <p class="stage-small">Uma embalagem pensada para mãos com menos força ou mobilidade.</p>
+        </div>
+        <div class="hero-copy stage stage-3" aria-hidden="true">
+          <p class="stage-big">Agora, abra.</p>
+        </div>
+
+        <p class="drag-hint" aria-hidden="true">Arraste para girar</p>
+        <div class="hero-veil" aria-hidden="true"></div>
+        <a class="skip-intro" href="#inicio">Entrar no site</a>
+      </div>
+    </section>
+
+    <!-- INÍCIO -->
+    <section class="intro" id="inicio" tabindex="-1" aria-labelledby="inicio-title">
+      <div class="wrap intro-grid">
+        <div class="intro-text">
+          <p class="status-pill"><span aria-hidden="true"></span>Projeto em desenvolvimento</p>
+          <h2 id="inicio-title" class="display">Proteção solar ao alcance de <em>todas as mãos</em>.</h2>
+          <p>Abrir, segurar e aplicar protetor solar pode ser difícil para quem tem artrite, Parkinson, mobilidade reduzida ou pouca força nas mãos. O SolAcess nasceu de uma pergunta simples:</p>
+          <blockquote>Por que a embalagem de um produto tão importante para a pele não poderia ser pensada para a acessibilidade?</blockquote>
+          <p>A resposta é uma proposta que une <strong>acessibilidade</strong>, <strong>praticidade</strong> e <strong>sustentabilidade</strong>: embalagem de bambu, bomba, rolo aplicador e sistema de refil.</p>
+          <div class="cta-row">
+            <a class="btn" href="#comprar">Comprar agora</a>
+            <a class="btn btn-ghost" href="#produto">Conheça o produto</a>
+          </div>
+        </div>
+        <figure class="intro-photo">
+          <picture>
+            <source srcset="assets/img/maos-artrite-640.webp 640w, assets/img/maos-artrite-928.webp 928w" sizes="(max-width: 900px) 92vw, 44vw" type="image/webp">
+            <img src="assets/img/maos-artrite-928.jpg" width="928" height="1152" alt="Mãos de uma pessoa idosa, com articulações dos dedos inchadas, seguram com firmeza o frasco SolAcess de bambu.">
+          </picture>
+          <figcaption>Formato pensado para quem tem pouca força ou rigidez nos dedos.</figcaption>
+        </figure>
+      </div>
+      <ul class="wrap pillars" aria-label="Pilares do SolAcess">
+        <li><svg aria-hidden="true"><use href="#i-hand"/></svg><strong>Acessibilidade</strong><span>Para quem tem menos força ou mobilidade nas mãos — e para qualquer pessoa.</span></li>
+        <li><svg aria-hidden="true"><use href="#i-roll"/></svg><strong>Praticidade</strong><span>Bomba para dosar e rolo para espalhar, com menos movimentos.</span></li>
+        <li><svg aria-hidden="true"><use href="#i-leaf"/></svg><strong>Sustentabilidade</strong><span>Bambu, PLA em componentes e refil para reaproveitar o frasco.</span></li>
+      </ul>
+    </section>
+
+    <!-- SOBRE O PRODUTO -->
+    <section class="produto" id="produto" aria-labelledby="produto-title">
+      <div class="wrap produto-grid">
+        <figure class="photo-card produto-photo">
+          <picture>
+            <source srcset="assets/img/aplicando-rolo-640.webp 640w, assets/img/aplicando-rolo-928.webp 928w" sizes="(max-width: 900px) 92vw, 42vw" type="image/webp">
+            <img src="assets/img/aplicando-rolo-928.jpg" width="928" height="1152" loading="lazy" alt="Uma senhora espalha o protetor no antebraço deslizando o rolo aplicador do frasco SolAcess, sem usar os dedos.">
+          </picture>
+        </figure>
+        <div class="produto-copy">
+          <p class="eyebrow">Sobre o produto</p>
+          <h2 id="produto-title" class="display">Do jeito de segurar <em>ao jeito de aplicar</em>.</h2>
+          <p>O SolAcess é um protetor solar com embalagem de <strong>200 ml</strong>, planejada para facilitar o contato com o produto desde o momento em que você segura o frasco até a aplicação na pele.</p>
+
+          <ol class="steps">
+            <li>
+              <svg aria-hidden="true"><use href="#i-grip"/></svg>
+              <div><h3>Segure com firmeza</h3><p>Formato ergonômico e superfície com elementos que favorecem a aderência, para o frasco não escorregar.</p></div>
+            </li>
+            <li>
+              <svg aria-hidden="true"><use href="#i-pump"/></svg>
+              <div><h3>Dose com a bomba</h3><p>Retire a quantidade necessária sem precisar abrir completamente a embalagem.</p></div>
+            </li>
+            <li>
+              <svg aria-hidden="true"><use href="#i-roll"/></svg>
+              <div><h3>Espalhe com o rolo</h3><p>O rolo aplicador espalha o protetor direto na pele, reduzindo a necessidade de usar os dedos.</p></div>
+            </li>
+            <li>
+              <svg aria-hidden="true"><use href="#i-refill"/></svg>
+              <div><h3>Reponha com o refil</h3><p>Quando o conteúdo acabar, troque pelo refil e continue com a mesma embalagem de bambu.</p></div>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="wrap publico">
+        <div class="publico-copy">
+          <h3 class="display-sm">Para quem é</h3>
+          <p>Pensado principalmente para pessoas com dificuldade de movimento ou de força nas mãos. Mas não é exclusivo: a acessibilidade pode beneficiar qualquer pessoa que queira aplicar protetor solar de forma mais prática.</p>
+        </div>
+        <ul class="tags">
+          <li>Pessoas com artrite</li>
+          <li>Pessoas com Parkinson</li>
+          <li>Mobilidade reduzida</li>
+          <li>Pouca força nas mãos</li>
+          <li>Dificuldade com embalagens convencionais</li>
+          <li class="tag-all">E qualquer pessoa</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CONHEÇA O FRASCO: foto de estúdio com pontos numerados -->
+    <section class="anatomia" id="frasco" aria-labelledby="anat-title">
+      <div class="wrap anat-grid">
+        <figure class="anat-figure">
+          <picture>
+            <source srcset="assets/img/produto-estudio-640.webp 640w, assets/img/produto-estudio-1080.webp 864w" sizes="(max-width: 900px) 92vw, 44vw" type="image/webp">
+            <img src="assets/img/produto-estudio-1080.jpg" width="864" height="1080" loading="lazy" alt="Frasco SolAcess de bambu em fundo claro, de frente, com a tampa, o corpo curvo, os pontos em relevo e a base.">
+          </picture>
+          <span class="hotspot hs-1" aria-hidden="true">1</span>
+          <span class="hotspot hs-2" aria-hidden="true">2</span>
+          <span class="hotspot hs-3" aria-hidden="true">3</span>
+          <span class="hotspot hs-4" aria-hidden="true">4</span>
+        </figure>
+        <div class="anat-copy">
+          <p class="eyebrow">Conheça o frasco</p>
+          <h2 id="anat-title" class="display">Cada detalhe pensado <em>para mãos com menos força</em>.</h2>
+          <ol class="anat-list">
+            <li><span class="num" aria-hidden="true">1</span><div><h3>Tampa com bomba</h3><p>Dispensa o protetor sem precisar abrir a embalagem por completo nem fazer movimentos de torção.</p></div></li>
+            <li><span class="num" aria-hidden="true">2</span><div><h3>Formato ergonômico</h3><p>As curvas do corpo acompanham a palma da mão e facilitam a pegada, mesmo com os dedos rígidos.</p></div></li>
+            <li><span class="num" aria-hidden="true">3</span><div><h3>Superfície aderente</h3><p>Pontos em relevo dão aderência para o frasco não escorregar e ajudam a encontrar a posição certa pelo toque.</p></div></li>
+            <li><span class="num" aria-hidden="true">4</span><div><h3>Base estável</h3><p>Mantém o frasco em pé com segurança e protege a estrutura de bambu.</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIFERENCIAIS -->
+    <section class="diferenciais" id="diferenciais" aria-labelledby="dif-title">
+      <div class="wrap">
+        <div class="section-head center">
+          <p class="eyebrow">Diferenciais</p>
+          <h2 id="dif-title" class="display">Proteção solar e acessibilidade <em>em uma só solução</em>.</h2>
+        </div>
+        <ul class="dif-grid">
+          <li class="dif-feature">
+            <picture>
+              <source srcset="assets/img/roll-on-640.webp" type="image/webp">
+              <img src="assets/img/roll-on-640.jpg" width="446" height="800" loading="lazy" alt="Representação do frasco SolAcess com o rolo aplicador à mostra, sobre uma bandeja de madeira com pedras e eucalipto.">
+            </picture>
+            <div><h3>Foco em acessibilidade</h3><p>Uma embalagem pensada para reduzir a força e os movimentos complexos necessários para usar o produto.</p></div>
+          </li>
+          <li><svg aria-hidden="true"><use href="#i-hand"/></svg><h3>Facilidade de manuseio</h3><p>Formato ergonômico, superfície aderente e base que dá estabilidade e protege a estrutura.</p></li>
+          <li><svg aria-hidden="true"><use href="#i-pump"/></svg><h3>Sistema de bomba</h3><p>Dispensa o produto sem precisar abrir a embalagem por completo.</p></li>
+          <li><svg aria-hidden="true"><use href="#i-roll"/></svg><h3>Aplicação por rolo</h3><p>Espalha o protetor direto na pele, com menos uso dos dedos.</p></li>
+          <li><svg aria-hidden="true"><use href="#i-refill"/></svg><h3>Possibilidade de refil</h3><p>Reaproveita a embalagem principal e diminui o descarte.</p></li>
+          <li><svg aria-hidden="true"><use href="#i-leaf"/></svg><h3>Bambu e PLA</h3><p>Estrutura externa de bambu e PLA planejado para componentes da bomba.</p></li>
+          <li><svg aria-hidden="true"><use href="#i-people"/></svg><h3>Para diferentes perfis</h3><p>Desenvolvido pensando em pessoas com necessidades diferentes, sem limitar o público.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- GALERIA -->
+    <section class="galeria" id="galeria" aria-labelledby="gal-title">
+      <div class="wrap">
+        <div class="section-head split">
+          <div>
+            <p class="eyebrow">Galeria</p>
+            <h2 id="gal-title" class="display">O SolAcess <em>no dia a dia</em>.</h2>
+          </div>
+          <p class="note">Da bolsa de praia à pia do banheiro: um frasco feito para acompanhar a rotina de quem precisa de mais praticidade.</p>
+        </div>
+        <ul class="gal-grid">
+          <li class="g-tall">
+            <figure class="video-card">
+              <video class="auto-video" muted loop playsinline preload="metadata" poster="assets/video/praia-poster.jpg" aria-label="Vídeo: representação do frasco SolAcess dentro de uma bolsa de tecido sobre a areia, ao lado de uma toalha e óculos de sol.">
+                <source src="assets/video/praia.mp4" type="video/mp4">
+              </video>
+              <figcaption>Na bolsa de praia</figcaption>
+            </figure>
+          </li>
+          <li class="g-big">
+            <figure>
+              <picture>
+                <source srcset="assets/img/produto-praia-640.webp 640w, assets/img/produto-praia-1264.webp 1083w" sizes="(max-width: 900px) 92vw, 50vw" type="image/webp">
+                <img src="assets/img/produto-praia-1264.jpg" width="1083" height="992" loading="lazy" alt="Frasco SolAcess de bambu em pé na areia, apoiado em um tronco, com o mar ao fundo.">
+              </picture>
+              <figcaption>Frasco de bambu, 200 ml</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <picture>
+                <source srcset="assets/img/textura-640.webp" type="image/webp">
+                <img src="assets/img/textura-640.jpg" width="640" height="640" loading="lazy" alt="Close da ponta de um dedo sobre os pontos em relevo do frasco de bambu, ao lado da folha gravada.">
+              </picture>
+              <figcaption>Pontos em relevo</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <picture>
+                <source srcset="assets/img/detalhe-tampa-640.webp" type="image/webp">
+                <img src="assets/img/detalhe-tampa-640.jpg" width="573" height="322" loading="lazy" alt="Close da tampa e da logo SolAcess gravada na madeira do frasco.">
+              </picture>
+              <figcaption>Logo gravada na madeira</figcaption>
+            </figure>
+          </li>
+          <li class="g-wide">
+            <figure>
+              <picture>
+                <source srcset="assets/img/praia-senhor-800.webp 800w, assets/img/praia-senhor-1264.webp 1264w" sizes="(max-width: 900px) 92vw, 50vw" type="image/webp">
+                <img src="assets/img/praia-senhor-1264.jpg" width="1264" height="848" loading="lazy" alt="Um senhor sorridente, sentado sob um guarda-sol na praia, segura o frasco SolAcess com as duas mãos.">
+              </picture>
+              <figcaption>Pegada firme com as duas mãos</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <picture>
+                <source srcset="assets/img/produto-folhagem-640.webp" type="image/webp">
+                <img src="assets/img/produto-folhagem-1264.jpg" width="1264" height="1264" loading="lazy" alt="Frasco SolAcess sobre uma pedra com musgo e folhagem ao fundo.">
+              </picture>
+              <figcaption>Estrutura externa de bambu</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <picture>
+                <source srcset="assets/img/praia-familia-1-640.webp" type="image/webp">
+                <img src="assets/img/praia-familia-1-640.jpg" width="640" height="427" loading="lazy" alt="Na praia, um adulto passa protetor no ombro de uma criança que segura o frasco SolAcess.">
+              </picture>
+              <figcaption>Para toda a família</figcaption>
+            </figure>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- BAMBU E SUSTENTABILIDADE -->
+    <section class="sustentabilidade" id="sustentabilidade" aria-labelledby="sus-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Bambu e sustentabilidade</p>
+          <h2 id="sus-title" class="display">Escolhas mais conscientes, <em>com transparência</em>.</h2>
+          <p class="lead-text">A sustentabilidade é um dos pilares do SolAcess. Cada material foi escolhido pensando nisso — e contamos com clareza o que já está definido e o que ainda depende de testes.</p>
+        </div>
+
+        <div class="materiais">
+          <article class="mat mat-bamboo">
+            <div class="bamboo-wall" aria-hidden="true"></div>
+            <h3>Bambu</h3>
+            <p>A estrutura externa da embalagem será feita principalmente de bambu, escolhido pela proposta visual e ambiental do projeto.</p>
+          </article>
+          <article class="mat">
+            <div class="mat-icon" aria-hidden="true"><svg><use href="#i-pump"/></svg></div>
+            <h3>PLA nos componentes</h3>
+            <p>O PLA (ácido polilático), produzido a partir de matérias-primas renováveis, foi escolhido para partes do mecanismo, especialmente da bomba.</p>
+          </article>
+          <article class="mat">
+            <div class="mat-icon" aria-hidden="true"><svg><use href="#i-refill"/></svg></div>
+            <h3>Sistema de refil</h3>
+            <p>O frasco de bambu pode ser reutilizado: troca-se só o conteúdo. A ideia é diminuir a necessidade de descartar toda a embalagem.</p>
+          </article>
+          <article class="mat">
+            <div class="mat-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M24 6l14 8v16l-14 8-14-8V14z"/><path d="M24 22l14-8M24 22L10 14M24 22v16"/></g></svg></div>
+            <h3>Cera de abelha</h3>
+            <p>Prevista como barreira interna, entre o material da embalagem e o conteúdo. Essa aplicação ainda vai passar por testes.</p>
+          </article>
+        </div>
+
+        <div class="refil">
+          <picture class="refil-photo">
+            <source srcset="assets/img/refil-640.webp 640w, assets/img/refil-1264.webp 1264w" sizes="(max-width: 900px) 92vw, 58vw" type="image/webp">
+            <img src="assets/img/refil-1264.jpg" width="1264" height="843" loading="lazy" alt="Representação do refil SolAcess: mãos despejam o conteúdo de um sachê dentro do frasco de bambu aberto.">
+          </picture>
+          <div class="refil-copy">
+            <p class="eyebrow">Clean Beauty</p>
+            <h3 class="display-sm">Uma referência, <em>não um selo</em>.</h3>
+            <p>Usamos o conceito de Clean Beauty para orientar a escolha dos componentes: buscar uma composição mais consciente, materiais selecionados e menos desperdício.</p>
+            <p>Como o conceito não tem uma definição única, e o projeto ainda está em planejamento, não dizemos que o produto atende a todos os seus critérios.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMULAÇÃO (ilustrativa, sem tabela) -->
+    <section class="ingredientes" id="ingredientes" aria-labelledby="ing-title">
+      <div class="wrap">
+        <div class="section-head center">
+          <p class="eyebrow">Formulação proposta</p>
+          <h2 id="ing-title" class="display">Ingredientes que <em>a gente reconhece</em>.</h2>
+          <p class="lead-text">A base da proposta conceitual, com óxido de zinco não nano como filtro solar mineral.</p>
+        </div>
+        <ul class="ing-list">
+          <li>
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="ing-bg"/><path d="M60 24c14 20 24 32 24 46a24 24 0 0 1-48 0c0-14 10-26 24-46z" class="ing-fill"/><path d="M48 72a12 12 0 0 0 10 11" class="ing-line"/></svg>
+            <span>Água purificada</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="ing-bg"/><path d="M60 26l26 15v30L60 86 34 71V41z" class="ing-fill"/><path d="M60 26v30m0 0l26-15M60 56L34 41m26 15v30" class="ing-line"/></svg>
+            <span>Óxido de zinco não nano</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="ing-bg"/><circle cx="48" cy="54" r="14" class="ing-fill"/><circle cx="72" cy="66" r="10" class="ing-fill" opacity=".75"/><circle cx="66" cy="42" r="6" class="ing-fill" opacity=".55"/><path d="M42 50a7 7 0 0 1 7-6" class="ing-line"/></svg>
+            <span>Glicerina</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="ing-bg"/><ellipse cx="60" cy="64" rx="22" ry="26" class="ing-fill"/><path d="M60 38c0-8 4-13 10-15M60 46c-6 6-6 30 0 40" class="ing-line"/></svg>
+            <span>Manteiga de karité</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="ing-bg"/><circle cx="60" cy="64" r="26" class="ing-fill"/><circle cx="60" cy="64" r="17" class="ing-cut"/><circle cx="54" cy="50" r="2.4" class="ing-dot"/><circle cx="66" cy="50" r="2.4" class="ing-dot"/><circle cx="60" cy="58" r="2.4" class="ing-dot"/></svg>
+            <span>Óleo de coco</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="ing-bg"/><ellipse cx="60" cy="60" rx="15" ry="27" transform="rotate(35 60 60)" class="ing-fill"/><path d="M50 50l20 20" class="ing-line"/></svg>
+            <span>Vitamina E</span>
+          </li>
+        </ul>
+        <p class="ing-more">… e outros componentes cosméticos ainda em definição.</p>
+        <p class="ing-note">A formulação é uma proposta inicial de estudo. Ela será desenvolvida, testada e validada por uma empresa especializada.</p>
+      </div>
+    </section>
+
+    <!-- INCLUSÃO: faixa com foto em largura total + detalhes -->
+    <section class="inclusao" id="inclusao" aria-labelledby="inc-title">
+      <div class="band">
+        <picture class="band-photo">
+          <source srcset="assets/img/jardim-800.webp 800w, assets/img/jardim-1376.webp 1376w" sizes="100vw" type="image/webp">
+          <img src="assets/img/jardim-1376.jpg" width="1376" height="768" loading="lazy" alt="Uma senhora de cabelos grisalhos sorri sentada em um banco de jardim, entre bambus, segurando o frasco SolAcess.">
+        </picture>
+        <div class="band-copy">
+          <div class="wrap">
+            <p class="eyebrow">Inclusão</p>
+            <h2 id="inc-title" class="display">Proteção contra o sol <em>deve ser acessível a todas as pessoas</em>.</h2>
+            <p>Essa é a ideia que guia o SolAcess. Muitas embalagens exigem força, precisão ou firmeza — e isso pode afastar justamente quem mais precisa de praticidade.</p>
+          </div>
+        </div>
+      </div>
+      <div class="wrap inc-grid">
+        <div class="inc-photos">
+          <picture class="inc-a">
+            <source srcset="assets/img/praia-familia-2-640.webp 640w, assets/img/praia-familia-2-1264.webp 1264w" sizes="(max-width: 900px) 92vw, 46vw" type="image/webp">
+            <img src="assets/img/praia-familia-2-1264.jpg" width="1264" height="843" loading="lazy" alt="Na praia, um adulto aplica protetor no ombro de uma criança, que segura o frasco SolAcess.">
+          </picture>
+          <picture class="inc-b">
+            <source srcset="assets/img/necessaire-640.webp" type="image/webp">
+            <img src="assets/img/necessaire-640.jpg" width="446" height="800" loading="lazy" alt="Representação do frasco SolAcess dentro de uma nécessaire verde, com escova de bambu e sabonete, sobre uma bancada.">
+          </picture>
+        </div>
+        <div class="inc-copy">
+          <h3 class="display-sm">Menos esforço, <em>mais autonomia</em>.</h3>
+          <ul class="checks">
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Menos força para segurar o produto</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Menos movimentos complexos para usar</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Aplicação com menos uso dos dedos</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Ergonomia a ser testada com diferentes usuários, principalmente pessoas com dificuldade de movimento ou força nas mãos</li>
+          </ul>
+          <p class="small-note">Este site segue a mesma ideia: botões grandes, uma única rolagem para entrar e, no botão de <strong>acessibilidade</strong> no topo da página, opções para aumentar o texto e desligar as animações.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPRAR -->
+    <section class="comprar" id="comprar" aria-labelledby="comprar-title">
+      <div class="wrap">
+        <div class="section-head center">
+          <p class="eyebrow">Comprar</p>
+          <h2 id="comprar-title" class="display">Escolha o seu <em>SolAcess</em>.</h2>
+          <p class="lead-text" id="loja-status">O SolAcess está em desenvolvimento e as vendas ainda não foram abertas. Escolha sua opção para saber como acompanhar o lançamento.</p>
+        </div>
+
+        <ul class="offers">
+          <li class="offer" data-produto="protetor">
+            <div class="offer-media">
+              <picture>
+                <source srcset="assets/img/bandeja-640.webp" type="image/webp">
+                <img src="assets/img/bandeja-640.jpg" width="446" height="800" loading="lazy" alt="Representação do frasco SolAcess de bambu deitado em uma bandeja de madeira.">
+              </picture>
+            </div>
+            <div class="offer-body">
+              <h3>Protetor SolAcess</h3>
+              <p class="offer-desc">O frasco completo, com estrutura externa de bambu, bomba e rolo aplicador.</p>
+              <ul class="offer-list">
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>200 ml</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Bomba para dosar sem abrir o frasco</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Rolo para espalhar na pele</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Superfície aderente e base estável</li>
+              </ul>
+              <p class="offer-price" data-preco></p>
+              <a class="btn btn-buy" href="#comprar" data-comprar>Comprar agora</a>
+            </div>
+          </li>
+
+          <li class="offer offer-highlight" data-produto="kit">
+            <p class="offer-badge">Protetor + refil</p>
+            <div class="offer-media">
+              <picture>
+                <source srcset="assets/img/frasco-refil-800.webp 800w, assets/img/frasco-refil-1264.webp 1264w" sizes="(max-width: 900px) 92vw, 32vw" type="image/webp">
+                <img src="assets/img/frasco-refil-800.jpg" width="800" height="537" loading="lazy" alt="Frasco SolAcess de bambu ao lado de um sachê de refil SolAcess, com folhas de bambu sobre um tecido de linho.">
+              </picture>
+            </div>
+            <div class="offer-body">
+              <h3>Kit Protetor + Refil</h3>
+              <p class="offer-desc">O frasco de bambu e um refil para continuar usando a mesma embalagem quando o conteúdo acabar.</p>
+              <ul class="offer-list">
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Tudo do Protetor SolAcess</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Um refil de 200 ml para a próxima reposição</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Menos descarte de embalagem</li>
+                <li class="offer-save"><svg aria-hidden="true"><use href="#i-check"/></svg>R$ 9,90 a menos do que comprar separado</li>
+              </ul>
+              <p class="offer-price" data-preco></p>
+              <a class="btn btn-buy" href="#comprar" data-comprar>Escolher este produto</a>
+            </div>
+          </li>
+
+          <li class="offer" data-produto="refil">
+            <div class="offer-media">
+              <picture>
+                <source srcset="assets/img/refil-640.webp" type="image/webp">
+                <img src="assets/img/refil-640.jpg" width="640" height="427" loading="lazy" alt="Representação do refil SolAcess sendo despejado no frasco de bambu.">
+              </picture>
+            </div>
+            <div class="offer-body">
+              <h3>Refil SolAcess</h3>
+              <p class="offer-desc">Só o conteúdo, para repor o protetor e reutilizar a embalagem principal de bambu.</p>
+              <ul class="offer-list">
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Reaproveita o frasco de bambu</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Diminui o descarte de embalagem</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>200 ml</li>
+              </ul>
+              <p class="offer-price" data-preco></p>
+              <a class="btn btn-buy" href="#comprar" data-comprar>Escolher este produto</a>
+            </div>
+          </li>
+        </ul>
+
+        <p class="img-note">Imagens ilustrativas do conceito, algumas criadas com inteligência artificial. Informações impressas nos rótulos das imagens não são definitivas: o FPS 50 é a meta do projeto e, assim como a proteção UVA/UVB e a resistência à água, ainda será comprovado em testes.</p>
+      </div>
+    </section>
+
+    <!-- FICHA TÉCNICA -->
+    <section class="specs" id="especificacoes" aria-labelledby="specs-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Ficha técnica</p>
+          <h2 id="specs-title" class="display">O que já está planejado <em>e o que vem por aí</em>.</h2>
+          <p class="note">Antes de chegar ao mercado, o SolAcess vai passar por testes de estabilidade, segurança, eficácia e compatibilidade com a embalagem, além das avaliações exigidas pelos órgãos reguladores.</p>
+        </div>
+        <figure class="tec-figure">
+          <a class="tec-image" href="assets/img/visao-tecnica-1083.jpg" target="_blank" rel="noopener">
+            <picture>
+              <source srcset="assets/img/visao-tecnica-640.webp 640w, assets/img/visao-tecnica-1083.webp 1083w" sizes="(max-width: 900px) 92vw, 880px" type="image/webp">
+              <img src="assets/img/visao-tecnica-1083.jpg" width="1083" height="992" loading="lazy" alt="Desenho técnico explodido do conceito SolAcess. Mostra a tampa de bambu; o sistema de pressão (press-top), com acionamento sem torção e dosagem por pressurização; o corte da bomba e o tubo da bomba; o frasco de bambu, com indicação de altura total, diâmetro e espessura da parede; o refil de 200 ml, sistema ecológico de refil com economia circular; o rolo aplicador; a barreira de cera de abelha; a base; o detalhe da textura tátil antiderrapante; e a fórmula proposta, com óxido de zinco não nano, karité, coco, vitamina E e meta de FPS 50, a comprovar.">
+            </picture>
+          </a>
+          <figcaption>
+            <span>Visão técnica do conceito: como as partes do frasco se encaixam. As medidas e o funcionamento exato do mecanismo serão definidos no protótipo físico.</span>
+            <a class="btn btn-ghost tec-open" href="assets/img/visao-tecnica-1083.jpg" target="_blank" rel="noopener">Ver a imagem em tamanho maior</a>
+          </figcaption>
+        </figure>
+        <dl class="spec-list" id="spec-list"></dl>
+      </div>
+    </section>
+
+    <!-- PERGUNTAS FREQUENTES -->
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap faq-grid">
+        <div class="section-head">
+          <p class="eyebrow">Perguntas frequentes</p>
+          <h2 id="faq-title" class="display">Dúvidas <em>comuns</em>.</h2>
+          <p class="note">Não encontrou o que procurava? Fale com a equipe pelos canais de contato logo abaixo.</p>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>O SolAcess já está à venda?</summary>
+            <p>Ainda não. O projeto está na etapa de planejamento e desenvolvimento conceitual. O próximo passo é produzir um protótipo físico para testar a bomba, o rolo aplicador e o sistema de refil.</p>
+          </details>
+          <details>
+            <summary>Qual é o FPS do SolAcess?</summary>
+            <p>A meta do projeto é FPS 50. Esse valor ainda precisa ser comprovado pelos testes de eficácia antes do lançamento — o mesmo vale para a proteção UVA e UVB.</p>
+          </details>
+          <details>
+            <summary>Ele é resistente à água?</summary>
+            <p>Essa característica ainda não foi definida. Se for pretendida, precisará ser comprovada por testes antes de ser anunciada.</p>
+          </details>
+          <details>
+            <summary>Como funciona a aplicação?</summary>
+            <p>Uma bomba libera a quantidade necessária sem que seja preciso abrir completamente a embalagem, e um rolo espalha o protetor direto na pele. O funcionamento exato do mecanismo será definido no protótipo físico.</p>
+          </details>
+          <details>
+            <summary>Para quem o SolAcess foi pensado?</summary>
+            <p>Principalmente para pessoas com artrite, Parkinson, mobilidade reduzida, pouca força nas mãos ou dificuldade com embalagens convencionais. Mas ele não é exclusivo: qualquer pessoa que queira mais praticidade pode usar.</p>
+          </details>
+          <details>
+            <summary>Como funciona o refil?</summary>
+            <p>A ideia é reutilizar a embalagem principal de bambu e trocar apenas o conteúdo. O modelo definitivo do refil ainda será desenvolvido e testado.</p>
+          </details>
+          <details>
+            <summary>A embalagem é biodegradável?</summary>
+            <p>Não afirmamos isso. A embalagem usa bambu e PLA em alguns componentes, mas há materiais diferentes envolvidos, e a degradação depende de condições específicas. Qualquer afirmação desse tipo só virá com testes e informações técnicas dos materiais.</p>
+          </details>
+          <details>
+            <summary>Quem desenvolve o SolAcess?</summary>
+            <p>O SolAcess é um projeto da Equipe 6 do SESI da Indústria. A fabricação e a validação da formulação estão planejadas para ser feitas com apoio de uma empresa especializada, que ainda não foi definida.</p>
+          </details>
+          <details>
+            <summary>Quanto custa o SolAcess?</summary>
+            <p>O Protetor SolAcess custa R$ 49,90, o Refil de 200 ml custa R$ 24,90 e o Kit Protetor + Refil sai por R$ 64,90.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section class="contato" id="contato" aria-labelledby="contato-title">
+      <div class="wrap contato-box">
+        <div>
+          <p class="eyebrow">Contato</p>
+          <h2 id="contato-title" class="display-sm">Quer acompanhar o SolAcess?</h2>
+          <p>Fale com a equipe pelos canais abaixo.</p>
+        </div>
+        <ul class="contact-list" id="contact-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-top">
+      <p class="footer-statement">Proteção solar ao alcance de <em>todas as mãos</em>.</p>
+      <a class="btn btn-light" href="#comprar">Escolher meu SolAcess</a>
+    </div>
+    <div class="wrap footer-grid">
+      <div>
+        <a class="brand" href="#inicio">
+          <svg class="brand-sun" viewBox="0 0 40 40" aria-hidden="true"><use href="#sun"/></svg>
+          <span>SolAcess</span>
+        </a>
+        <p class="footer-tag">Acessibilidade, praticidade e sustentabilidade.</p>
+      </div>
+      <nav aria-label="Rodapé: produto">
+        <p class="footer-title">Produto</p>
+        <ul>
+          <li><a href="#produto">Como funciona</a></li>
+          <li><a href="#frasco">Conheça o frasco</a></li>
+          <li><a href="#galeria">Galeria</a></li>
+          <li><a href="#comprar">Comprar</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Rodapé: projeto">
+        <p class="footer-title">Projeto</p>
+        <ul>
+          <li><a href="#sustentabilidade">Bambu e sustentabilidade</a></li>
+          <li><a href="#inclusao">Inclusão</a></li>
+          <li><a href="#faq">Perguntas frequentes</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+      <p class="footer-legal">Projeto desenvolvido pela Equipe 6 do SESI da Indústria. O SolAcess está em fase de planejamento: formulação, embalagem e mecanismos são conceituais e podem mudar após estudos e testes. Imagens ilustrativas.</p>
+    </div>
+  </footer>
+
+  <!-- Aviso de compra (sem transação) -->
+  <dialog class="buy-dialog" id="buy-dialog" aria-labelledby="buy-title">
+    <form method="dialog">
+      <button class="dialog-close" value="fechar" aria-label="Fechar">×</button>
+      <svg class="dialog-sun" viewBox="0 0 40 40" aria-hidden="true"><use href="#sun"/></svg>
+      <h2 id="buy-title">Vendas ainda não abertas</h2>
+      <p>Você escolheu <strong data-escolha></strong>. O SolAcess está em desenvolvimento e ainda não pode ser comprado.</p>
+      <p data-aviso-texto>Quando as vendas abrirem, este botão levará direto para a loja.</p>
+      <div class="dialog-actions">
+        <a class="btn" data-aviso-link href="#contato">Acompanhar o lançamento</a>
+        <button class="btn btn-ghost" value="fechar">Voltar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+/* ==================== assets/js/loja.js ==================== */
+/*
+ * CONFIGURAÇÃO DA LOJA E DOS CONTATOS — edite somente este arquivo.
+ *
+ * Enquanto `vendasAbertas` for false, os botões de compra NÃO levam a nenhum pagamento:
+ * eles abrem um aviso explicando que o SolAcess está em desenvolvimento.
+ *
+ * Para abrir as vendas:
+ *   1. preencha `preco` e `checkoutUrl` de cada produto (link da loja / checkout);
+ *   2. troque `vendasAbertas` para true.
+ *
+ * Campos com null aparecem no site como "A definir".
+ */
+window.SOLACESS_LOJA = {
+  vendasAbertas: false,
+
+  produtos: {
+    protetor: { nome: "Protetor SolAcess",       preco: "R$ 49,90", checkoutUrl: null },
+    kit:      { nome: "Kit Protetor + Refil",    preco: "R$ 64,90", checkoutUrl: null },
+    refil:    { nome: "Refil SolAcess",          preco: "R$ 24,90", checkoutUrl: null }
+  },
+
+  // Link para acompanhar o lançamento (lista de espera, formulário, Instagram...).
+  // Se ficar null, o aviso leva para a seção de contato.
+  avisoUrl: null,
+
+  // Canais de contato. Deixe null para mostrar "A definir".
+  // Os contatos sugeridos antes ainda não foram confirmados pela equipe, então o site mostra "A definir".
+  // Quando tiver os contatos reais, troque null pelo valor, por exemplo:
+  //   email: "contato@solacess.com.br",
+  //   whatsapp: "5511999998888",        (DDI + DDD + número, só números)
+  //   instagram: "solacess.oficial"
+  contato: {
+    email: null,
+    whatsapp: null,
+    instagram: null
+  }
+};
+  </script>
+  <script>
+/* ==================== assets/js/specs.js ==================== */
+/*
+ * FICHA TÉCNICA — edite somente este arquivo.
+ * `status` é um complemento curto (opcional).
+ * Fonte: documento institucional e técnico do SolAcess (pdfs/resumo.pdf).
+ *
+ * Quando FPS, UVA/UVB, resistência à água, fabricante ou regularização forem
+ * comprovados por testes, adicione-os aqui (ex.: { rotulo: "FPS", valor: "50" })
+ * e remova o item correspondente de `SOLACESS_PROXIMAS` abaixo.
+ */
+window.SOLACESS_SPECS = [
+  { rotulo: "Fator de proteção (FPS)", valor: "Meta: FPS 50", status: "a comprovar em testes" },
+  { rotulo: "Regularização Anvisa", valor: "Prevista após os testes", status: "etapa de lançamento" },
+  { rotulo: "Público principal", valor: "Pouca força ou mobilidade nas mãos" },
+  { rotulo: "Capacidade da embalagem", valor: "200 ml" },
+  { rotulo: "Volume do refil", valor: "200 ml" },
+  { rotulo: "Estrutura externa", valor: "Bambu" },
+  { rotulo: "Aplicação", valor: "Bomba + rolo aplicador" },
+  { rotulo: "Componentes da bomba", valor: "PLA" },
+  { rotulo: "Barreira interna", valor: "Cera de abelha", status: "em teste" },
+  { rotulo: "Filtro solar", valor: "Óxido de zinco não nano" },
+  { rotulo: "Base da fórmula", valor: "Karité, coco, glicerina e vitamina E" },
+  { rotulo: "Referência de formulação", valor: "Clean Beauty" }
+];
+
+/* O que será definido nas próximas etapas, depois dos testes. */
+window.SOLACESS_PROXIMAS = [
+  "Testes de FPS e UVA/UVB",
+  "Resistência à água",
+  "Fabricante parceiro",
+  "Registro na Anvisa"
+];
+  </script>
+  <script>
+/* ==================== assets/js/main.js ==================== */
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  var reduceMotion = root.classList.contains('reduce-motion');
+  var A_DEFINIR = 'A definir';
+  function $(s, c) { return (c || document).querySelector(s); }
+  function $$(s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); }
+
+  /* ---------- Menu móvel ---------- */
+  var toggle = $('.nav-toggle');
+  var toggleLabel = $('.sr-only', toggle);
+  var menu = $('#menu');
+  function setMenu(open) {
+    menu.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggleLabel.textContent = open ? 'Fechar menu' : 'Abrir menu';
+    if (open) setPanel(false);
+  }
+  function closeMenu() { setMenu(false); }
+  toggle.addEventListener('click', function () { setMenu(!menu.classList.contains('open')); });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) closeMenu(); });
+
+  /* ---------- Painel de acessibilidade: texto maior e menos movimento ---------- */
+  var a11yBtn = $('.a11y-toggle');
+  var panel = $('#a11y-panel');
+  function setPanel(open) {
+    panel.hidden = !open;
+    a11yBtn.setAttribute('aria-expanded', String(open));
+    if (open) { closeMenu(); var first = $('.a11y-opt', panel); if (first) first.focus(); }
+  }
+  a11yBtn.addEventListener('click', function () { setPanel(panel.hidden); });
+  $('.a11y-done', panel).addEventListener('click', function () { setPanel(false); a11yBtn.focus(); });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (!panel.hidden) { setPanel(false); a11yBtn.focus(); }
+    closeMenu();
+  });
+  // tocar fora do menu ou do painel também fecha
+  document.addEventListener('click', function (e) {
+    if (menu.classList.contains('open') && !e.target.closest('.site-header nav')) closeMenu();
+    if (!panel.hidden && !e.target.closest('.a11y')) setPanel(false);
+  });
+
+  function save(key, value) { try { localStorage.setItem(key, value); } catch (e) {} }
+  var opts = $$('.a11y-opt', panel);
+  function syncOpts() {
+    opts.forEach(function (sw) {
+      var cls = sw.getAttribute('data-pref') === 'texto' ? 'texto-grande' : 'reduce-motion';
+      sw.setAttribute('aria-checked', String(root.classList.contains(cls)));
+    });
+  }
+  opts.forEach(function (sw) {
+    sw.addEventListener('click', function () {
+      if (sw.getAttribute('data-pref') === 'texto') {
+        var big = root.classList.toggle('texto-grande');
+        save('solacess-texto', big ? 'grande' : 'normal');
+      } else {
+        var calm = !root.classList.contains('reduce-motion');
+        setMotion(calm);
+        save('solacess-movimento', calm ? 'reduzido' : 'normal');
+      }
+      syncOpts();
+    });
+  });
+  syncOpts();
+
+  function setMotion(calm) {
+    reduceMotion = calm;
+    root.classList.toggle('reduce-motion', calm);
+    root.classList.toggle('no-3d', calm);
+    root.classList.toggle('has-3d', !calm);
+    // vídeos: param de tocar sozinhos (o botão de cada vídeo continua funcionando)
+    videos.forEach(function (v) {
+      v.userPaused = calm;
+      if (calm) v.pause();
+      else {
+        var r = v.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < window.innerHeight) v.play().catch(function () {});
+      }
+    });
+    if (calm) $$('.reveal').forEach(function (el) { el.classList.add('in'); });
+    document.dispatchEvent(new CustomEvent('solacess:movimento', { detail: { reduzido: calm } }));
+    onScroll();
+  }
+
+  /* ---------- Cabeçalho com fundo depois da abertura ---------- */
+  var header = $('.site-header');
+  var intro = $('#inicio');
+  function onScroll() {
+    var limit = root.classList.contains('no-3d') ? 40 : intro.offsetTop - 80;
+    header.classList.toggle('solid', window.scrollY > limit);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  /* ---------- Ficha técnica ---------- */
+  var list = $('#spec-list');
+  (window.SOLACESS_SPECS || []).forEach(function (s) {
+    var item = document.createElement('div');
+    var dt = document.createElement('dt');
+    var dd = document.createElement('dd');
+    dt.textContent = s.rotulo;
+    if (s.valor) {
+      dd.textContent = s.valor;
+      if (s.status) { var st = document.createElement('span'); st.className = 'spec-status'; st.textContent = s.status; dd.appendChild(st); }
+    } else { dd.textContent = 'Em definição'; dd.className = 'pending'; }
+    item.appendChild(dt); item.appendChild(dd); list.appendChild(item);
+  });
+  var prox = window.SOLACESS_PROXIMAS || [];
+  if (prox.length) {
+    var card = document.createElement('div');
+    card.className = 'spec-next';
+    var t = document.createElement('dt');
+    t.textContent = 'Próximas etapas';
+    var d = document.createElement('dd');
+    var proxTexto = document.createElement('p');
+    proxTexto.textContent = 'Definidos depois dos testes de eficácia e segurança, com uma empresa especializada:';
+    var ul = document.createElement('ul');
+    prox.forEach(function (txt) { var li = document.createElement('li'); li.textContent = txt; ul.appendChild(li); });
+    d.appendChild(proxTexto); d.appendChild(ul);
+    card.appendChild(t); card.appendChild(d); list.appendChild(card);
+  }
+
+  /* ---------- Loja ---------- */
+  var loja = window.SOLACESS_LOJA || { produtos: {}, contato: {} };
+  var aberta = !!loja.vendasAbertas;
+  var dialog = $('#buy-dialog');
+
+  $$('.offer').forEach(function (card) {
+    var id = card.getAttribute('data-produto');
+    var p = (loja.produtos || {})[id] || {};
+    var price = $('[data-preco]', card);
+    if (p.preco) { price.textContent = p.preco; }
+    else { price.innerHTML = '<span class="price-todo">Preço a definir</span>'; }
+
+    var btn = $('[data-comprar]', card);
+    btn.setAttribute('aria-describedby', 'loja-status');
+    if (aberta && p.checkoutUrl) {
+      btn.href = p.checkoutUrl;
+      btn.target = '_blank'; btn.rel = 'noopener';
+    } else {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        openNotice(p.nome || $('h3', card).textContent, btn);
+      });
+    }
+  });
+  if (aberta) {
+    $('#loja-status').textContent = 'Escolha sua opção e finalize a compra na loja oficial.';
+  }
+
+  var lastTrigger = null;
+  function openNotice(nome, trigger) {
+    lastTrigger = trigger;
+    $('[data-escolha]', dialog).textContent = nome;
+    var link = $('[data-aviso-link]', dialog);
+    if (loja.avisoUrl) { link.href = loja.avisoUrl; link.target = '_blank'; link.rel = 'noopener'; }
+    else { link.href = '#contato'; link.removeAttribute('target'); }
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else { window.alert('Vendas ainda não abertas: o SolAcess está em desenvolvimento.'); }
+  }
+  if (dialog) {
+    $('[data-aviso-link]', dialog).addEventListener('click', function () { if (!loja.avisoUrl) dialog.close(); });
+    dialog.addEventListener('close', function () { if (lastTrigger) lastTrigger.focus(); });
+    dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close(); });
+  }
+
+  $$('[data-loja]').forEach(function (dd) {
+    var v = loja[dd.getAttribute('data-loja')];
+    if (v) dd.textContent = v;
+    else { dd.textContent = A_DEFINIR; dd.className = 'pending'; }
+  });
+
+  /* ---------- Contatos ---------- */
+  var c = loja.contato || {};
+  function formatPhone(n) {
+    var d = String(n).replace(/\D/g, '');
+    var m = d.match(/^(\d{2})(\d{2})(\d{4,5})(\d{4})$/);
+    return m ? '+' + m[1] + ' (' + m[2] + ') ' + m[3] + '-' + m[4] : '+' + d;
+  }
+  var canais = [
+    { nome: 'E-mail', valor: c.email, href: c.email && 'mailto:' + c.email, texto: c.email },
+    { nome: 'WhatsApp', valor: c.whatsapp, href: c.whatsapp && 'https://wa.me/' + String(c.whatsapp).replace(/\D/g, ''), texto: c.whatsapp && formatPhone(c.whatsapp) },
+    { nome: 'Instagram', valor: c.instagram, href: c.instagram && 'https://instagram.com/' + String(c.instagram).replace(/^@/, ''), texto: c.instagram && '@' + String(c.instagram).replace(/^@/, '') }
+  ];
+  var cl = $('#contact-list');
+  canais.forEach(function (k) {
+    var li = document.createElement('li');
+    var label = document.createElement('span'); label.className = 'c-label'; label.textContent = k.nome;
+    li.appendChild(label);
+    if (k.valor) {
+      var a = document.createElement('a'); a.href = k.href; a.textContent = k.texto;
+      if (k.href.indexOf('http') === 0) { a.target = '_blank'; a.rel = 'noopener'; }
+      li.appendChild(a);
+    } else {
+      var s = document.createElement('span'); s.className = 'pending'; s.textContent = A_DEFINIR; li.appendChild(s);
+    }
+    cl.appendChild(li);
+  });
+
+  /* ---------- Vídeos: sem som, em loop, só quando visíveis ----------
+     Sem botões de pausa: quem preferir vídeos parados liga "Menos movimento" no painel de acessibilidade. */
+  var videos = $$('.auto-video');
+  videos.forEach(function (v) {
+    var card = v.closest('.video-card');
+    v.muted = true;
+    v.userPaused = reduceMotion;
+    function broken() { card.classList.add('broken'); card.style.backgroundImage = 'url("' + v.getAttribute('poster') + '")'; }
+    var source = $('source', v);
+    if (source) source.addEventListener('error', broken);
+    v.addEventListener('error', broken);
+  });
+
+  if ('IntersectionObserver' in window) {
+    var vio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var v = en.target;
+        if (en.isIntersecting && !v.userPaused) v.play().catch(function () {});
+        else if (!en.isIntersecting && !v.paused) v.pause();
+      });
+    }, { threshold: 0.25 });
+    videos.forEach(function (v) { vio.observe(v); });
+
+    if (!reduceMotion) {
+      var targets = $$('.section-head, .intro-grid > *, .pillars li, .produto-grid > *, .publico > *, .anat-figure, .anat-list li, .dif-grid li, .gal-grid li, .mat, .refil > *, .ing-list li, .band-copy .wrap, .inc-grid > *, .offer, .tec-figure, .spec-list > div, .faq-list details, .contato-box > *, .footer-top');
+      var rio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('in'); rio.unobserve(en.target); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px' });
+      targets.forEach(function (el, i) {
+        el.classList.add('reveal');
+        el.style.transitionDelay = (i % 4) * 70 + 'ms';
+        rio.observe(el);
+      });
+    }
+  } else if (!reduceMotion) {
+    videos.forEach(function (v) { v.play().catch(function () {}); });
+  }
+
+  /* Links para o início levam o foco para o conteúdo (o botão da abertura é tratado no hero.js) */
+  $$('a[href="#inicio"]:not(.skip-intro)').forEach(function (a) {
+    a.addEventListener('click', function () { setTimeout(function () { intro.focus({ preventScroll: true }); }, 50); });
+  });
+})();
+  </script>
+  <script>
+/* ==================== assets/js/hero.js ==================== */
+/*
+ * Abertura do SolAcess com o giro de 360° do frasco.
+ * - O frasco gira sozinho; arrastar para o lado (mouse ou dedo) gira para um lado ou para o outro.
+ * - ROLAGEM ÚNICA: um único gesto (roda do mouse, deslizar o dedo, seta para baixo, Page Down, espaço)
+ *   ou o botão "Entrar no site" toca a abertura inteira sozinha e leva direto ao conteúdo.
+ *   Rolagens repetidas durante a animação (tremor, inércia do trackpad) são ignoradas.
+ * - Com "Menos movimento" ligado, a abertura vira uma imagem estática e a página rola normalmente.
+ */
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  var hero = document.querySelector('.hero');
+  var sticky = document.querySelector('.hero-sticky');
+  var model = document.querySelector('.hero-model');
+  var video = document.querySelector('.hero-video');
+  var veil = document.querySelector('.hero-veil');
+  var stages = [document.querySelector('.stage-1'), document.querySelector('.stage-2'), document.querySelector('.stage-3')];
+  var dragHint = document.querySelector('.drag-hint');
+  var enter = document.querySelector('.skip-intro');
+  var intro = document.getElementById('inicio');
+  var isSmall = window.matchMedia('(max-width: 700px)');
+  if (!hero || !video) return;
+
+  var broken = false;
+  function on() { return root.classList.contains('has-3d'); }
+  function fallback() { broken = true; root.classList.remove('has-3d'); root.classList.add('no-3d'); }
+  function noop() {}
+  function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
+  function smooth(t) { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); }
+  function range(p, a, b) { return smooth((p - a) / (b - a)); }
+  function now() { return window.performance ? performance.now() : Date.now(); }
+
+  /* Tamanho do quadro do vídeo e ponto da abertura (topo da tampa ≈ 7,5% da altura) */
+  var S = 0, H = 0, W = 0;
+  var mobileCenter = 0; // no celular: centro do espaço livre entre o cabeçalho e o texto
+  function resize() {
+    if (!on()) return;
+    W = sticky.clientWidth; H = sticky.clientHeight;
+    if (isSmall.matches) {
+      // O frasco ocupa o espaço entre o cabeçalho e o bloco de texto, sem cobrir o título.
+      var header = document.querySelector('.site-header');
+      var top = header ? header.offsetHeight : 70;
+      var copyTop = stages[0].offsetTop;
+      var free = Math.max(0, copyTop - top);
+      // o frasco visível ocupa ~85% do quadro do vídeo (as bordas são esfumadas pela máscara)
+      S = clamp(free / 0.85, H * 0.45, Math.min(H * 0.96, W * 1.5));
+      mobileCenter = top + free / 2;
+      sticky.style.setProperty('--copy-top', copyTop + 'px');
+    } else {
+      S = Math.min(H * 0.96, W * 1.1);
+      sticky.style.removeProperty('--copy-top');
+    }
+    video.style.setProperty('--s', S + 'px');
+    update(p || 0);
+  }
+  window.addEventListener('resize', resize);
+  // o bloco de texto muda de altura com "Texto maior" ou quando a fonte termina de carregar
+  if ('ResizeObserver' in window) new ResizeObserver(function () { resize(); }).observe(stages[0]);
+
+  /* Camadas de texto, câmera e transição para um progresso p (0 → 1) */
+  function windowOp(p, a, b, c, d) { return Math.min(range(p, a, b), 1 - range(p, c, d)); }
+  function update(p) {
+    var s1 = 1 - range(p, 0.04, 0.14);
+    stages[0].style.opacity = s1;
+    stages[0].style.transform = 'translateY(' + (-40 * (1 - s1)) + 'px)';
+    var s2 = windowOp(p, 0.15, 0.22, 0.36, 0.43);
+    stages[1].style.opacity = s2;
+    stages[1].style.transform = (isSmall.matches ? '' : 'translateY(-50%) ') + 'translateX(' + (30 * (1 - s2)) + 'px)';
+    var s3 = windowOp(p, 0.47, 0.53, 0.64, 0.7);
+    stages[2].style.opacity = s3;
+    stages[2].style.transform = 'scale(' + (0.96 + 0.04 * s3) + ')';
+    dragHint.style.opacity = 0.8 * (1 - range(p, 0.02, 0.08));
+    sticky.style.setProperty('--shade', (1 - range(p, 0.38, 0.46)).toFixed(3));
+
+    // câmera: leve aproximação → centraliza a tampa → mergulha na abertura
+    var center = range(p, 0.3, 0.62);
+    var approach = 1 + 0.12 * range(p, 0.1, 0.4) + 1.4 * range(p, 0.45, 0.66);
+    var dive = Math.pow(range(p, 0.66, 0.95), 2.2) * 26;
+    var scale = approach + dive;
+    var originY = (H - S) / 2 + 0.075 * S;            // posição na tela do topo da tampa
+    var ty = (H / 2 - originY) * center;
+    var tyMobile = isSmall.matches ? (mobileCenter - H / 2) * (1 - center) : 0; // no celular, frasco acima do texto
+    video.style.transform = 'translate3d(0,' + (ty + tyMobile).toFixed(1) + 'px,0) scale(' + scale.toFixed(3) + ')';
+
+    var v = range(p, 0.84, 0.975);
+    veil.style.clipPath = 'circle(' + (v * 75).toFixed(2) + '% at 50% 50%)';
+    veil.style.webkitClipPath = veil.style.clipPath;
+    enter.style.opacity = 1 - range(p, 0.85, 0.92);
+    enter.style.pointerEvents = p > 0.9 ? 'none' : '';
+  }
+
+  /* Linha do tempo da abertura: [segundos, progresso]. Os textos ficam parados o tempo de serem lidos. */
+  var TIMELINE = [[0, 0], [0.4, 0.22], [1.5, 0.36], [1.9, 0.53], [2.4, 0.64], [3.2, 1]];
+  function timeline(t) {
+    for (var i = 1; i < TIMELINE.length; i++) {
+      var a = TIMELINE[i - 1], b = TIMELINE[i];
+      if (t <= b[0]) return a[1] + (b[1] - a[1]) * (t - a[0]) / (b[0] - a[0]);
+    }
+    return 1;
+  }
+
+  var state = 'idle';      // idle (parada no início) | playing (animação tocando)
+  var p = 0, t0 = 0, last = 0, holdUntil = 0;
+
+  function frame(ts) {
+    if (state !== 'playing') return;
+    var dt = Math.min((ts - (last || ts)) / 1000, 0.05); last = ts;
+    var target = timeline((now() - t0) / 1000);
+    p += (target - p) * Math.min(1, dt * 7);          // suaviza as mudanças de velocidade
+    if (target >= 1 && p > 0.985) p = 1;
+    update(p);
+    if (p >= 1) finish();
+    else requestAnimationFrame(frame);
+  }
+
+  // rolagem instantânea (ignora o scroll-behavior: smooth do CSS)
+  function jumpTo(y) {
+    var prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, y);
+    root.style.scrollBehavior = prev;
+  }
+  function scrollPos() { return window.scrollY || window.pageYOffset || 0; }
+
+  function play() {
+    if (state !== 'idle' || !on()) return;
+    state = 'playing'; t0 = now(); last = 0;
+    // a página fica travada durante a animação (nenhum tipo de rolagem passa)
+    root.classList.add('intro-playing', 'intro-lock');
+    // se a página já estava um pouco rolada dentro da abertura, volta ao topo dela antes de animar
+    if (scrollPos() > 0) jumpTo(0);
+    enter.textContent = 'Pular animação';
+    requestAnimationFrame(frame);
+  }
+
+  // "Pular animação": avança a linha do tempo até o fim (o mergulho final fica rápido)
+  function skip() { if (state === 'playing' && now() - t0 > 800) t0 = now() - 1e5; }
+
+  function reset() {
+    state = 'idle'; p = 0; update(0);
+    root.classList.remove('intro-playing', 'intro-lock');
+    enter.textContent = 'Entrar no site';
+  }
+
+  function finish() {
+    // A luz creme cobre a tela inteira: a troca para o conteúdo não aparece como um salto.
+    root.classList.remove('intro-lock');
+    jumpTo(intro ? intro.offsetTop : hero.offsetHeight);
+    lastY = scrollPos();
+    if (intro) { try { intro.focus({ preventScroll: true }); } catch (e) { intro.focus(); } }
+    holdUntil = now() + 900;   // ignora o resto do gesto (inércia do trackpad, tremor)
+    reset();
+  }
+
+  /* Gestos que entram no site: uma rolagem, um deslizar de dedo ou uma tecla */
+  // "na abertura": qualquer posição antes do conteúdo começar
+  function atTop() { return scrollPos() < (intro ? intro.offsetTop - 4 : hero.offsetHeight); }
+  function inPanel(e) { return e.target && e.target.closest && e.target.closest('#menu, .a11y-panel, dialog'); }
+  function holding() { return state === 'playing' || now() < holdUntil; }
+
+  window.addEventListener('wheel', function (e) {
+    if (!on() || inPanel(e)) return;
+    if (holding()) { e.preventDefault(); return; }
+    if (atTop() && e.deltaY > 0) { e.preventDefault(); play(); }
+  }, { passive: false });
+
+  var touchY = null, touchX = 0;
+  window.addEventListener('touchstart', function (e) {
+    touchY = e.touches.length === 1 ? e.touches[0].clientY : null;
+    if (touchY !== null) touchX = e.touches[0].clientX;
+  }, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    if (!on() || inPanel(e)) return;
+    if (holding()) { if (e.cancelable) e.preventDefault(); return; }
+    if (touchY === null || dragging || !atTop()) return;
+    var dy = touchY - e.touches[0].clientY, dx = Math.abs(touchX - e.touches[0].clientX);
+    if (dy > 0 && dy >= dx) {                          // dedo subindo = rolar para baixo
+      if (e.cancelable) e.preventDefault();
+      if (dy > 6) { touchY = null; play(); }
+    }
+  }, { passive: false });
+
+  window.addEventListener('keydown', function (e) {
+    if (!on() || e.altKey || e.ctrlKey || e.metaKey) return;
+    var k = e.key;
+    if (k !== 'ArrowDown' && k !== 'PageDown' && k !== ' ' && k !== 'Spacebar') return;
+    if (e.target.closest && e.target.closest('input, textarea, select, button, summary, [contenteditable], dialog, #menu, .a11y-panel')) return;
+    if (holding()) { e.preventDefault(); return; }
+    if (atTop() && !e.shiftKey) { e.preventDefault(); play(); }
+  });
+
+  // Rolagens que não chegam como "roda do mouse" — barra lateral, botão do meio, alguns mouses e touchpads,
+  // teclado com foco em outro lugar — também disparam a entrada automática quando vão para baixo na abertura.
+  var lastY = scrollPos();
+  window.addEventListener('scroll', function () {
+    var y = scrollPos(), down = y > lastY;
+    lastY = y;
+    if (!on()) return;
+    if (state === 'playing') { if (y > 0) jumpTo(0); return; }   // segura a abertura no lugar durante a animação
+    if (now() < holdUntil) return;
+    if (down && y > 0 && atTop()) play();
+  }, { passive: true });
+
+  // Botão grande "Entrar no site" (sem precisar rolar). Durante a animação ele vira "Pular animação".
+  // Sem a animação (Menos movimento), ele continua sendo um link comum para o conteúdo.
+  enter.addEventListener('click', function (e) {
+    if (!on()) return;
+    e.preventDefault();
+    if (state === 'idle') play(); else skip();
+  });
+
+  /* Arrastar para girar: só começa depois de um movimento claro para o lado (evita giros sem querer) */
+  var down = false, dragging = false, sx = 0, sy = 0, lastX = 0, resumeTimer = 0;
+  model.addEventListener('pointerdown', function (e) {
+    if (state !== 'idle' || !video.duration) return;
+    down = true; dragging = false; sx = lastX = e.clientX; sy = e.clientY;
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!down) return;
+    if (!dragging) {
+      var mx = Math.abs(e.clientX - sx);
+      if (mx > 10 && mx > Math.abs(e.clientY - sy)) {
+        dragging = true; lastX = e.clientX;
+        model.classList.add('grabbing'); video.pause(); clearTimeout(resumeTimer);
+      }
+      return;
+    }
+    var dx = e.clientX - lastX; lastX = e.clientX;
+    var d = video.duration;
+    var t = (video.currentTime - dx / W * d * 1.2) % d;   // uma volta ≈ largura da tela arrastada
+    if (t < 0) t += d;
+    video.currentTime = t;
+  });
+  function endDrag() {
+    down = false;
+    if (!dragging) return;
+    dragging = false; model.classList.remove('grabbing');
+    resumeTimer = setTimeout(function () { if (visible && on()) video.play().catch(noop); }, 1400);
+  }
+  window.addEventListener('pointerup', endDrag);
+  window.addEventListener('pointercancel', endDrag);
+
+  /* O vídeo só toca com a abertura na tela */
+  var visible = true;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) {
+      visible = en[0].isIntersecting;
+      if (!on()) return;
+      if (visible) { if (!dragging) video.play().catch(noop); }
+      else video.pause();
+    }).observe(hero);
+  }
+
+  var source = video.querySelector('source');
+  if (source) source.addEventListener('error', fallback);
+  video.addEventListener('error', fallback);
+
+  function start() {
+    if (broken) { fallback(); return; }
+    video.muted = true;
+    resize();
+    p = 0; update(0);
+    root.classList.add('ready');
+    if (visible) video.play().catch(noop);
+  }
+  function stop() {
+    if (state === 'playing') reset();
+    video.pause();
+  }
+
+  // O painel de acessibilidade liga/desliga o movimento sem recarregar a página.
+  document.addEventListener('solacess:movimento', function () { if (on()) start(); else stop(); });
+
+  if (on()) start();
+})();
+  </script>
+</body>
+</html>

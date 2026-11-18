@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SolAcess · Protetor solar acessível</title>
+  <meta name="description" content="SolAcess é um projeto de protetor solar que une acessibilidade, praticidade e sustentabilidade: embalagem de bambu, bomba, rolo aplicador e sistema de refil. Em desenvolvimento pela Equipe 6 do SESI da Indústria.">
+  <meta name="theme-color" content="#24382B">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%2324382B'/%3E%3Ccircle cx='16' cy='18' r='6' fill='none' stroke='%23F4EEE3' stroke-width='2.2'/%3E%3Cg stroke='%23F4EEE3' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M16 5v4M6 18h3M23 18h3M8.5 10.5l2.2 2.2M23.5 10.5l-2.2 2.2'/%3E%3C/g%3E%3C/svg%3E">
+  <script>
+    /* Antes de desenhar: abertura animada ou estática, e preferências salvas pela pessoa (texto maior, menos movimento). */
+    (function () {
+      var d = document.documentElement, pref = null;
+      if (!d.lang) d.lang = 'pt-BR';
+      try { pref = localStorage.getItem('solacess-movimento'); } catch (e) {}
+      var reduce = pref ? pref === 'reduzido' : !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      d.classList.add(reduce ? 'no-3d' : 'has-3d');
+      if (reduce) d.classList.add('reduce-motion');
+      try { if (localStorage.getItem('solacess-texto') === 'grande') d.classList.add('texto-grande'); } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#inicio">Pular para o conteúdo</a>
+
+  <header class="site-header" id="topo">
+    <a class="brand" href="#inicio" aria-label="SolAcess, ir para o início">
+      <svg class="brand-sun" viewBox="0 0 40 40" aria-hidden="true"><use href="#sun"/></svg>
+      <span>SolAcess</span>
+    </a>
+    <nav aria-label="Principal">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="menu">
+        <span class="sr-only">Abrir menu</span><span class="bars" aria-hidden="true"></span>
+      </button>
+      <ul id="menu">
+        <li><a href="#produto">Produto</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+        <li><a href="#sustentabilidade">Bambu</a></li>
+        <li><a href="#inclusao">Inclusão</a></li>
+        <li><a href="#faq">Dúvidas</a></li>
+        <li class="menu-cta"><a href="#comprar">Comprar</a></li>
+      </ul>
+    </nav>
+    <div class="a11y">
+      <button class="a11y-toggle" type="button" aria-expanded="false" aria-controls="a11y-panel" title="Acessibilidade">
+        <svg aria-hidden="true"><use href="#i-a11y"/></svg><span class="sr-only">Acessibilidade</span>
+      </button>
+      <div class="a11y-panel" id="a11y-panel" role="group" aria-labelledby="a11y-title" hidden>
+        <p class="a11y-title" id="a11y-title">Acessibilidade</p>
+        <button class="a11y-opt" type="button" role="switch" aria-checked="false" data-pref="texto">
+          <span><strong>Texto maior</strong><small>Letras e botões maiores.</small></span>
+          <span class="switch" aria-hidden="true"></span>
+        </button>
+        <button class="a11y-opt" type="button" role="switch" aria-checked="false" data-pref="movimento">
+          <span><strong>Menos movimento</strong><small>Sem animações e sem vídeos tocando sozinhos.</small></span>
+          <span class="switch" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-ghost a11y-done" type="button">Pronto</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Ícones e ilustrações reutilizáveis -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="g-bamboo" x1="0" x2="1">
+        <stop offset="0" stop-color="#9DB06E"/><stop offset=".35" stop-color="#C5D08F"/><stop offset=".6" stop-color="#A5B873"/><stop offset="1" stop-color="#7C9254"/>
+      </linearGradient>
+    </defs>
+    <symbol id="sun" viewBox="0 0 40 40">
+      <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+        <circle cx="20" cy="23" r="7.5"/>
+        <path d="M20 4.5v5M4.5 23h5M30.5 23h5M9 12l3.4 3.4M31 12l-3.4 3.4M10.5 32.5l2.5-2.5M29.5 32.5L27 30"/>
+      </g>
+    </symbol>
+    <!-- colmo de bambu verde com nós e folhas (abertura) -->
+    <symbol id="bamboo" viewBox="0 0 120 520">
+      <g>
+        <rect x="46" y="0" width="28" height="520" rx="6" fill="url(#g-bamboo)"/>
+        <g fill="#6E8449">
+          <rect x="43" y="118" width="34" height="7" rx="3.5"/><rect x="43" y="262" width="34" height="7" rx="3.5"/><rect x="43" y="400" width="34" height="7" rx="3.5"/>
+        </g>
+        <g fill="#F4F1DC" opacity=".35"><rect x="51" y="6" width="4" height="108" rx="2"/><rect x="51" y="130" width="4" height="128" rx="2"/><rect x="51" y="274" width="4" height="122" rx="2"/><rect x="51" y="412" width="4" height="104" rx="2"/></g>
+        <g fill="#7E9A55">
+          <path d="M77 120c18-14 30-14 42-10-12 8-24 14-42 10z"/>
+          <path d="M77 122c14 2 26 10 34 22-14-2-26-10-34-22z" fill="#93AE66"/>
+          <path d="M43 264c-18-12-30-12-42-6 12 8 25 12 42 6z"/>
+          <path d="M43 266c-12 6-20 16-24 28 12-4 21-14 24-28z" fill="#93AE66"/>
+          <path d="M77 402c20-8 32-4 42 4-14 4-27 4-42-4z" fill="#93AE66"/>
+        </g>
+      </g>
+    </symbol>
+    <symbol id="i-hand" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 26V12a3 3 0 0 1 6 0v10M22 22V9a3 3 0 0 1 6 0v13M28 22V11a3 3 0 0 1 6 0v15M16 22v-2a3 3 0 0 0-6 0v8c0 9 6 15 14 15s12-6 12-14v-3"/></g></symbol>
+    <symbol id="i-pump" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20h12v22H18z"/><path d="M22 20v-6h4v6M26 14h10v4"/><path d="M20 8h8"/></g></symbol>
+    <symbol id="i-roll" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M16 6h16v22H16z"/><circle cx="24" cy="34" r="8"/><path d="M8 44h32" stroke-dasharray="3 4"/></g></symbol>
+    <symbol id="i-refill" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 8h16l4 6v26H10z"/><path d="M36 22a8 8 0 1 1-4 14M36 22l-1 5M36 22l5 1"/></g></symbol>
+    <symbol id="i-grip" viewBox="0 0 48 48"><g fill="currentColor"><circle cx="17" cy="13" r="2.6"/><circle cx="24" cy="13" r="2.6"/><circle cx="31" cy="13" r="2.6"/><circle cx="17" cy="21" r="2.6"/><circle cx="31" cy="21" r="2.6"/><circle cx="17" cy="29" r="2.6"/><circle cx="24" cy="29" r="2.6"/><circle cx="24" cy="37" r="2.6"/><circle cx="31" cy="37" r="2.6"/></g></symbol>
+    <symbol id="i-leaf" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 38C10 20 22 10 40 8c0 18-10 30-28 30z"/><path d="M10 38l16-16"/></g></symbol>
+    <symbol id="i-people" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="17" cy="16" r="5"/><circle cx="33" cy="18" r="4"/><path d="M7 38c0-7 4-12 10-12s10 5 10 12M27 38c0-5 3-10 7-10s7 4 7 10"/></g></symbol>
+    <symbol id="i-a11y" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10.4"/><circle cx="12" cy="6.9" r="1.5" fill="currentColor" stroke="none"/><path d="M6.6 9.8l5.4 1.3 5.4-1.3M12 11.1v3.4M12 14.5l-2.7 4.4M12 14.5l2.7 4.4"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <main>
+    <!-- ABERTURA: giro de 360° do frasco. Uma rolagem toca a animação inteira (hero.js). -->
+    <section class="hero" id="abertura" aria-labelledby="hero-title">
+      <div class="hero-sticky">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <svg class="hero-bamboo hb-1" viewBox="0 0 120 520" aria-hidden="true"><use href="#bamboo"/></svg>
+        <svg class="hero-bamboo hb-2" viewBox="0 0 120 520" aria-hidden="true"><use href="#bamboo"/></svg>
+        <svg class="hero-bamboo hb-3" viewBox="0 0 120 520" aria-hidden="true"><use href="#bamboo"/></svg>
+        <div class="hero-model" aria-hidden="true">
+          <video class="hero-video" muted loop playsinline preload="none" poster="assets/video/giro-360-poster.jpg">
+            <source src="assets/video/giro-360-hero.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <!-- Alternativa estática (menos movimento ou vídeo indisponível) -->
+        <div class="hero-fallback">
+          <picture>
+            <source srcset="assets/img/produto-folhagem-640.webp 640w, assets/img/produto-folhagem-1264.webp 1264w" sizes="(max-width: 800px) 90vw, 46vw" type="image/webp">
+            <img src="assets/img/produto-folhagem-1264.jpg" width="1264" height="1264" alt="Representação do frasco SolAcess, com estrutura externa de bambu, sobre uma pedra com musgo e folhagem ao fundo.">
+          </picture>
+        </div>
+
+        <div class="hero-copy stage stage-1">
+          <p class="eyebrow">Protetor solar acessível</p>
+          <h1 id="hero-title">Sol<span>Acess</span></h1>
+          <p class="lede">Proteção solar pensada para ser fácil de segurar e de aplicar.</p>
+          <p class="scroll-hint" aria-hidden="true"><span class="mouse"></span>Role uma vez para entrar</p>
+        </div>
+        <div class="hero-copy stage stage-2" aria-hidden="true">
+          <p class="stage-big">Bambu por fora.</p>
+          <p class="stage-small">Uma embalagem pensada para mãos com menos força ou mobilidade.</p>
+        </div>
+        <div class="hero-copy stage stage-3" aria-hidden="true">
+          <p class="stage-big">Agora, abra.</p>
+        </div>
+
+        <p class="drag-hint" aria-hidden="true">Arraste para girar</p>
+        <div class="hero-veil" aria-hidden="true"></div>
+        <a class="skip-intro" href="#inicio">Entrar no site</a>
+      </div>
+    </section>
+
+    <!-- INÍCIO -->
+    <section class="intro" id="inicio" tabindex="-1" aria-labelledby="inicio-title">
+      <div class="wrap intro-grid">
+        <div class="intro-text">
+          <p class="status-pill"><span aria-hidden="true"></span>Projeto em desenvolvimento</p>
+          <h2 id="inicio-title" class="display">Proteção solar ao alcance de <em>todas as mãos</em>.</h2>
+          <p>Abrir, segurar e aplicar protetor solar pode ser difícil para quem tem artrite, Parkinson, mobilidade reduzida ou pouca força nas mãos. O SolAcess nasceu de uma pergunta simples:</p>
+          <blockquote>Por que a embalagem de um produto tão importante para a pele não poderia ser pensada para a acessibilidade?</blockquote>
+          <p>A resposta é uma proposta que une <strong>acessibilidade</strong>, <strong>praticidade</strong> e <strong>sustentabilidade</strong>: embalagem de bambu, bomba, rolo aplicador e sistema de refil.</p>
+          <div class="cta-row">
+            <a class="btn" href="#comprar">Comprar agora</a>
+            <a class="btn btn-ghost" href="#produto">Conheça o produto</a>
+          </div>
+        </div>
+        <figure class="intro-photo">
+          <picture>
+            <source srcset="assets/img/maos-artrite-640.webp 640w, assets/img/maos-artrite-928.webp 928w" sizes="(max-width: 900px) 92vw, 44vw" type="image/webp">
+            <img src="assets/img/maos-artrite-928.jpg" width="928" height="1152" alt="Mãos de uma pessoa idosa, com articulações dos dedos inchadas, seguram com firmeza o frasco SolAcess de bambu.">
+          </picture>
+          <figcaption>Formato pensado para quem tem pouca força ou rigidez nos dedos.</figcaption>
+        </figure>
+      </div>
+      <ul class="wrap pillars" aria-label="Pilares do SolAcess">
+        <li><svg aria-hidden="true"><use href="#i-hand"/></svg><strong>Acessibilidade</strong><span>Para quem tem menos força ou mobilidade nas mãos — e para qualquer pessoa.</span></li>
+        <li><svg aria-hidden="true"><use href="#i-roll"/></svg><strong>Praticidade</strong><span>Bomba para dosar e rolo para espalhar, com menos movimentos.</span></li>
+        <li><svg aria-hidden="true"><use href="#i-leaf"/></svg><strong>Sustentabilidade</strong><span>Bambu, PLA em componentes e refil para reaproveitar o frasco.</span></li>
+      </ul>
+    </section>
+
+    <!-- SOBRE O PRODUTO -->
+    <section class="produto" id="produto" aria-labelledby="produto-title">
+      <div class="wrap produto-grid">
+        <figure class="photo-card produto-photo">
+          <picture>
+            <source srcset="assets/img/aplicando-rolo-640.webp 640w, assets/img/aplicando-rolo-928.webp 928w" sizes="(max-width: 900px) 92vw, 42vw" type="image/webp">
+            <img src="assets/img/aplicando-rolo-928.jpg" width="928" height="1152" loading="lazy" alt="Uma senhora espalha o protetor no antebraço deslizando o rolo aplicador do frasco SolAcess, sem usar os dedos.">
+          </picture>
+        </figure>
+        <div class="produto-copy">
+          <p class="eyebrow">Sobre o produto</p>
+          <h2 id="produto-title" class="display">Do jeito de segurar <em>ao jeito de aplicar</em>.</h2>
+          <p>O SolAcess é um protetor solar com embalagem de <strong>200 ml</strong>, planejada para facilitar o contato com o produto desde o momento em que você segura o frasco até a aplicação na pele.</p>
+
+          <ol class="steps">
+            <li>
+              <svg aria-hidden="true"><use href="#i-grip"/></svg>
+              <div><h3>Segure com firmeza</h3><p>Formato ergonômico e superfície com elementos que favorecem a aderência, para o frasco não escorregar.</p></div>
+            </li>
+            <li>
+              <svg aria-hidden="true"><use href="#i-pump"/></svg>
+              <div><h3>Dose com a bomba</h3><p>Retire a quantidade necessária sem precisar abrir completamente a embalagem.</p></div>
+            </li>
+            <li>
+              <svg aria-hidden="true"><use href="#i-roll"/></svg>
+              <div><h3>Espalhe com o rolo</h3><p>O rolo aplicador espalha o protetor direto na pele, reduzindo a necessidade de usar os dedos.</p></div>
+            </li>
+            <li>
+              <svg aria-hidden="true"><use href="#i-refill"/></svg>
+              <div><h3>Reponha com o refil</h3><p>Quando o conteúdo acabar, troque pelo refil e continue com a mesma embalagem de bambu.</p></div>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="wrap publico">
+        <div class="publico-copy">
+          <h3 class="display-sm">Para quem é</h3>
+          <p>Pensado principalmente para pessoas com dificuldade de movimento ou de força nas mãos. Mas não é exclusivo: a acessibilidade pode beneficiar qualquer pessoa que queira aplicar protetor solar de forma mais prática.</p>
+        </div>
+        <ul class="tags">
+          <li>Pessoas com artrite</li>
+          <li>Pessoas com Parkinson</li>
+          <li>Mobilidade reduzida</li>
+          <li>Pouca força nas mãos</li>
+          <li>Dificuldade com embalagens convencionais</li>
+          <li class="tag-all">E qualquer pessoa</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CONHEÇA O FRASCO: foto de estúdio com pontos numerados -->
+    <section class="anatomia" id="frasco" aria-labelledby="anat-title">
+      <div class="wrap anat-grid">
+        <figure class="anat-figure">
+          <picture>
+            <source srcset="assets/img/produto-estudio-640.webp 640w, assets/img/produto-estudio-1080.webp 864w" sizes="(max-width: 900px) 92vw, 44vw" type="image/webp">
+            <img src="assets/img/produto-estudio-1080.jpg" width="864" height="1080" loading="lazy" alt="Frasco SolAcess de bambu em fundo claro, de frente, com a tampa, o corpo curvo, os pontos em relevo e a base.">
+          </picture>
+          <span class="hotspot hs-1" aria-hidden="true">1</span>
+          <span class="hotspot hs-2" aria-hidden="true">2</span>
+          <span class="hotspot hs-3" aria-hidden="true">3</span>
+          <span class="hotspot hs-4" aria-hidden="true">4</span>
+        </figure>
+        <div class="anat-copy">
+          <p class="eyebrow">Conheça o frasco</p>
+          <h2 id="anat-title" class="display">Cada detalhe pensado <em>para mãos com menos força</em>.</h2>
+          <ol class="anat-list">
+            <li><span class="num" aria-hidden="true">1</span><div><h3>Tampa com bomba</h3><p>Dispensa o protetor sem precisar abrir a embalagem por completo nem fazer movimentos de torção.</p></div></li>
+            <li><span class="num" aria-hidden="true">2</span><div><h3>Formato ergonômico</h3><p>As curvas do corpo acompanham a palma da mão e facilitam a pegada, mesmo com os dedos rígidos.</p></div></li>
+            <li><span class="num" aria-hidden="true">3</span><div><h3>Superfície aderente</h3><p>Pontos em relevo dão aderência para o frasco não escorregar e ajudam a encontrar a posição certa pelo toque.</p></div></li>
+            <li><span class="num" aria-hidden="true">4</span><div><h3>Base estável</h3><p>Mantém o frasco em pé com segurança e protege a estrutura de bambu.</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIFERENCIAIS -->
+    <section class="diferenciais" id="diferenciais" aria-labelledby="dif-title">
+      <div class="wrap">
+        <div class="section-head center">
+          <p class="eyebrow">Diferenciais</p>
+          <h2 id="dif-title" class="display">Proteção solar e acessibilidade <em>em uma só solução</em>.</h2>
+        </div>
+        <ul class="dif-grid">
+          <li class="dif-feature">
+            <picture>
+              <source srcset="assets/img/roll-on-640.webp" type="image/webp">
+              <img src="assets/img/roll-on-640.jpg" width="446" height="800" loading="lazy" alt="Representação do frasco SolAcess com o rolo aplicador à mostra, sobre uma bandeja de madeira com pedras e eucalipto.">
+            </picture>
+            <div><h3>Foco em acessibilidade</h3><p>Uma embalagem pensada para reduzir a força e os movimentos complexos necessários para usar o produto.</p></div>
+          </li>
+          <li><svg aria-hidden="true"><use href="#i-hand"/></svg><h3>Facilidade de manuseio</h3><p>Formato ergonômico, superfície aderente e base que dá estabilidade e protege a estrutura.</p></li>
+          <li><svg aria-hidden="true"><use href="#i-pump"/></svg><h3>Sistema de bomba</h3><p>Dispensa o produto sem precisar abrir a embalagem por completo.</p></li>
+          <li><svg aria-hidden="true"><use href="#i-roll"/></svg><h3>Aplicação por rolo</h3><p>Espalha o protetor direto na pele, com menos uso dos dedos.</p></li>
+          <li><svg aria-hidden="true"><use href="#i-refill"/></svg><h3>Possibilidade de refil</h3><p>Reaproveita a embalagem principal e diminui o descarte.</p></li>
+          <li><svg aria-hidden="true"><use href="#i-leaf"/></svg><h3>Bambu e PLA</h3><p>Estrutura externa de bambu e PLA planejado para componentes da bomba.</p></li>
+          <li><svg aria-hidden="true"><use href="#i-people"/></svg><h3>Para diferentes perfis</h3><p>Desenvolvido pensando em pessoas com necessidades diferentes, sem limitar o público.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- GALERIA -->
+    <section class="galeria" id="galeria" aria-labelledby="gal-title">
+      <div class="wrap">
+        <div class="section-head split">
+          <div>
+            <p class="eyebrow">Galeria</p>
+            <h2 id="gal-title" class="display">O SolAcess <em>no dia a dia</em>.</h2>
+          </div>
+          <p class="note">Da bolsa de praia à pia do banheiro: um frasco feito para acompanhar a rotina de quem precisa de mais praticidade.</p>
+        </div>
+        <ul class="gal-grid">
+          <li class="g-tall">
+            <figure class="video-card">
+              <video class="auto-video" muted loop playsinline preload="metadata" poster="assets/video/praia-poster.jpg" aria-label="Vídeo: representação do frasco SolAcess dentro de uma bolsa de tecido sobre a areia, ao lado de uma toalha e óculos de sol.">
+                <source src="assets/video/praia.mp4" type="video/mp4">
+              </video>
+              <figcaption>Na bolsa de praia</figcaption>
+            </figure>
+          </li>
+          <li class="g-big">
+            <figure>
+              <picture>
+                <source srcset="assets/img/produto-praia-640.webp 640w, assets/img/produto-praia-1264.webp 1083w" sizes="(max-width: 900px) 92vw, 50vw" type="image/webp">
+                <img src="assets/img/produto-praia-1264.jpg" width="1083" height="992" loading="lazy" alt="Frasco SolAcess de bambu em pé na areia, apoiado em um tronco, com o mar ao fundo.">
+              </picture>
+              <figcaption>Frasco de bambu, 200 ml</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <picture>
+                <source srcset="assets/img/textura-640.webp" type="image/webp">
+                <img src="assets/img/textura-640.jpg" width="640" height="640" loading="lazy" alt="Close da ponta de um dedo sobre os pontos em relevo do frasco de bambu, ao lado da folha gravada.">
+              </picture>
+              <figcaption>Pontos em relevo</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <picture>
+                <source srcset="assets/img/detalhe-tampa-640.webp" type="image/webp">
+                <img src="assets/img/detalhe-tampa-640.jpg" width="573" height="322" loading="lazy" alt="Close da tampa e da logo SolAcess gravada na madeira do frasco.">
+              </picture>
+              <figcaption>Logo gravada na madeira</figcaption>
+            </figure>
+          </li>
+          <li class="g-wide">
+            <figure>
+              <picture>
+                <source srcset="assets/img/praia-senhor-800.webp 800w, assets/img/praia-senhor-1264.webp 1264w" sizes="(max-width: 900px) 92vw, 50vw" type="image/webp">
+                <img src="assets/img/praia-senhor-1264.jpg" width="1264" height="848" loading="lazy" alt="Um senhor sorridente, sentado sob um guarda-sol na praia, segura o frasco SolAcess com as duas mãos.">
+              </picture>
+              <figcaption>Pegada firme com as duas mãos</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <picture>
+                <source srcset="assets/img/produto-folhagem-640.webp" type="image/webp">
+                <img src="assets/img/produto-folhagem-1264.jpg" width="1264" height="1264" loading="lazy" alt="Frasco SolAcess sobre uma pedra com musgo e folhagem ao fundo.">
+              </picture>
+              <figcaption>Estrutura externa de bambu</figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure>
+              <picture>
+                <source srcset="assets/img/praia-familia-1-640.webp" type="image/webp">
+                <img src="assets/img/praia-familia-1-640.jpg" width="640" height="427" loading="lazy" alt="Na praia, um adulto passa protetor no ombro de uma criança que segura o frasco SolAcess.">
+              </picture>
+              <figcaption>Para toda a família</figcaption>
+            </figure>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- BAMBU E SUSTENTABILIDADE -->
+    <section class="sustentabilidade" id="sustentabilidade" aria-labelledby="sus-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Bambu e sustentabilidade</p>
+          <h2 id="sus-title" class="display">Escolhas mais conscientes, <em>com transparência</em>.</h2>
+          <p class="lead-text">A sustentabilidade é um dos pilares do SolAcess. Cada material foi escolhido pensando nisso — e contamos com clareza o que já está definido e o que ainda depende de testes.</p>
+        </div>
+
+        <div class="materiais">
+          <article class="mat mat-bamboo">
+            <div class="bamboo-wall" aria-hidden="true"></div>
+            <h3>Bambu</h3>
+            <p>A estrutura externa da embalagem será feita principalmente de bambu, escolhido pela proposta visual e ambiental do projeto.</p>
+          </article>
+          <article class="mat">
+            <div class="mat-icon" aria-hidden="true"><svg><use href="#i-pump"/></svg></div>
+            <h3>PLA nos componentes</h3>
+            <p>O PLA (ácido polilático), produzido a partir de matérias-primas renováveis, foi escolhido para partes do mecanismo, especialmente da bomba.</p>
+          </article>
+          <article class="mat">
+            <div class="mat-icon" aria-hidden="true"><svg><use href="#i-refill"/></svg></div>
+            <h3>Sistema de refil</h3>
+            <p>O frasco de bambu pode ser reutilizado: troca-se só o conteúdo. A ideia é diminuir a necessidade de descartar toda a embalagem.</p>
+          </article>
+          <article class="mat">
+            <div class="mat-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M24 6l14 8v16l-14 8-14-8V14z"/><path d="M24 22l14-8M24 22L10 14M24 22v16"/></g></svg></div>
+            <h3>Cera de abelha</h3>
+            <p>Prevista como barreira interna, entre o material da embalagem e o conteúdo. Essa aplicação ainda vai passar por testes.</p>
+          </article>
+        </div>
+
+        <div class="refil">
+          <picture class="refil-photo">
+            <source srcset="assets/img/refil-640.webp 640w, assets/img/refil-1264.webp 1264w" sizes="(max-width: 900px) 92vw, 58vw" type="image/webp">
+            <img src="assets/img/refil-1264.jpg" width="1264" height="843" loading="lazy" alt="Representação do refil SolAcess: mãos despejam o conteúdo de um sachê dentro do frasco de bambu aberto.">
+          </picture>
+          <div class="refil-copy">
+            <p class="eyebrow">Clean Beauty</p>
+            <h3 class="display-sm">Uma referência, <em>não um selo</em>.</h3>
+            <p>Usamos o conceito de Clean Beauty para orientar a escolha dos componentes: buscar uma composição mais consciente, materiais selecionados e menos desperdício.</p>
+            <p>Como o conceito não tem uma definição única, e o projeto ainda está em planejamento, não dizemos que o produto atende a todos os seus critérios.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMULAÇÃO (ilustrativa, sem tabela) -->
+    <section class="ingredientes" id="ingredientes" aria-labelledby="ing-title">
+      <div class="wrap">
+        <div class="section-head center">
+          <p class="eyebrow">Formulação proposta</p>
+          <h2 id="ing-title" class="display">Ingredientes que <em>a gente reconhece</em>.</h2>
+          <p class="lead-text">A base da proposta conceitual, com óxido de zinco não nano como filtro solar mineral.</p>
+        </div>
+        <ul class="ing-list">
+          <li>
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="ing-bg"/><path d="M60 24c14 20 24 32 24 46a24 24 0 0 1-48 0c0-14 10-26 24-46z" class="ing-fill"/><path d="M48 72a12 12 0 0 0 10 11" class="ing-line"/></svg>
+            <span>Água purificada</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="ing-bg"/><path d="M60 26l26 15v30L60 86 34 71V41z" class="ing-fill"/><path d="M60 26v30m0 0l26-15M60 56L34 41m26 15v30" class="ing-line"/></svg>
+            <span>Óxido de zinco não nano</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="ing-bg"/><circle cx="48" cy="54" r="14" class="ing-fill"/><circle cx="72" cy="66" r="10" class="ing-fill" opacity=".75"/><circle cx="66" cy="42" r="6" class="ing-fill" opacity=".55"/><path d="M42 50a7 7 0 0 1 7-6" class="ing-line"/></svg>
+            <span>Glicerina</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="ing-bg"/><ellipse cx="60" cy="64" rx="22" ry="26" class="ing-fill"/><path d="M60 38c0-8 4-13 10-15M60 46c-6 6-6 30 0 40" class="ing-line"/></svg>
+            <span>Manteiga de karité</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="ing-bg"/><circle cx="60" cy="64" r="26" class="ing-fill"/><circle cx="60" cy="64" r="17" class="ing-cut"/><circle cx="54" cy="50" r="2.4" class="ing-dot"/><circle cx="66" cy="50" r="2.4" class="ing-dot"/><circle cx="60" cy="58" r="2.4" class="ing-dot"/></svg>
+            <span>Óleo de coco</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="ing-bg"/><ellipse cx="60" cy="60" rx="15" ry="27" transform="rotate(35 60 60)" class="ing-fill"/><path d="M50 50l20 20" class="ing-line"/></svg>
+            <span>Vitamina E</span>
+          </li>
+        </ul>
+        <p class="ing-more">… e outros componentes cosméticos ainda em definição.</p>
+        <p class="ing-note">A formulação é uma proposta inicial de estudo. Ela será desenvolvida, testada e validada por uma empresa especializada.</p>
+      </div>
+    </section>
+
+    <!-- INCLUSÃO: faixa com foto em largura total + detalhes -->
+    <section class="inclusao" id="inclusao" aria-labelledby="inc-title">
+      <div class="band">
+        <picture class="band-photo">
+          <source srcset="assets/img/jardim-800.webp 800w, assets/img/jardim-1376.webp 1376w" sizes="100vw" type="image/webp">
+          <img src="assets/img/jardim-1376.jpg" width="1376" height="768" loading="lazy" alt="Uma senhora de cabelos grisalhos sorri sentada em um banco de jardim, entre bambus, segurando o frasco SolAcess.">
+        </picture>
+        <div class="band-copy">
+          <div class="wrap">
+            <p class="eyebrow">Inclusão</p>
+            <h2 id="inc-title" class="display">Proteção contra o sol <em>deve ser acessível a todas as pessoas</em>.</h2>
+            <p>Essa é a ideia que guia o SolAcess. Muitas embalagens exigem força, precisão ou firmeza — e isso pode afastar justamente quem mais precisa de praticidade.</p>
+          </div>
+        </div>
+      </div>
+      <div class="wrap inc-grid">
+        <div class="inc-photos">
+          <picture class="inc-a">
+            <source srcset="assets/img/praia-familia-2-640.webp 640w, assets/img/praia-familia-2-1264.webp 1264w" sizes="(max-width: 900px) 92vw, 46vw" type="image/webp">
+            <img src="assets/img/praia-familia-2-1264.jpg" width="1264" height="843" loading="lazy" alt="Na praia, um adulto aplica protetor no ombro de uma criança, que segura o frasco SolAcess.">
+          </picture>
+          <picture class="inc-b">
+            <source srcset="assets/img/necessaire-640.webp" type="image/webp">
+            <img src="assets/img/necessaire-640.jpg" width="446" height="800" loading="lazy" alt="Representação do frasco SolAcess dentro de uma nécessaire verde, com escova de bambu e sabonete, sobre uma bancada.">
+          </picture>
+        </div>
+        <div class="inc-copy">
+          <h3 class="display-sm">Menos esforço, <em>mais autonomia</em>.</h3>
+          <ul class="checks">
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Menos força para segurar o produto</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Menos movimentos complexos para usar</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Aplicação com menos uso dos dedos</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Ergonomia a ser testada com diferentes usuários, principalmente pessoas com dificuldade de movimento ou força nas mãos</li>
+          </ul>
+          <p class="small-note">Este site segue a mesma ideia: botões grandes, uma única rolagem para entrar e, no botão de <strong>acessibilidade</strong> no topo da página, opções para aumentar o texto e desligar as animações.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPRAR -->
+    <section class="comprar" id="comprar" aria-labelledby="comprar-title">
+      <div class="wrap">
+        <div class="section-head center">
+          <p class="eyebrow">Comprar</p>
+          <h2 id="comprar-title" class="display">Escolha o seu <em>SolAcess</em>.</h2>
+          <p class="lead-text" id="loja-status">O SolAcess está em desenvolvimento e as vendas ainda não foram abertas. Escolha sua opção para saber como acompanhar o lançamento.</p>
+        </div>
+
+        <ul class="offers">
+          <li class="offer" data-produto="protetor">
+            <div class="offer-media">
+              <picture>
+                <source srcset="assets/img/bandeja-640.webp" type="image/webp">
+                <img src="assets/img/bandeja-640.jpg" width="446" height="800" loading="lazy" alt="Representação do frasco SolAcess de bambu deitado em uma bandeja de madeira.">
+              </picture>
+            </div>
+            <div class="offer-body">
+              <h3>Protetor SolAcess</h3>
+              <p class="offer-desc">O frasco completo, com estrutura externa de bambu, bomba e rolo aplicador.</p>
+              <ul class="offer-list">
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>200 ml</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Bomba para dosar sem abrir o frasco</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Rolo para espalhar na pele</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Superfície aderente e base estável</li>
+              </ul>
+              <p class="offer-price" data-preco></p>
+              <a class="btn btn-buy" href="#comprar" data-comprar>Comprar agora</a>
+            </div>
+          </li>
+
+          <li class="offer offer-highlight" data-produto="kit">
+            <p class="offer-badge">Protetor + refil</p>
+            <div class="offer-media">
+              <picture>
+                <source srcset="assets/img/frasco-refil-800.webp 800w, assets/img/frasco-refil-1264.webp 1264w" sizes="(max-width: 900px) 92vw, 32vw" type="image/webp">
+                <img src="assets/img/frasco-refil-800.jpg" width="800" height="537" loading="lazy" alt="Frasco SolAcess de bambu ao lado de um sachê de refil SolAcess, com folhas de bambu sobre um tecido de linho.">
+              </picture>
+            </div>
+            <div class="offer-body">
+              <h3>Kit Protetor + Refil</h3>
+              <p class="offer-desc">O frasco de bambu e um refil para continuar usando a mesma embalagem quando o conteúdo acabar.</p>
+              <ul class="offer-list">
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Tudo do Protetor SolAcess</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Um refil de 200 ml para a próxima reposição</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Menos descarte de embalagem</li>
+                <li class="offer-save"><svg aria-hidden="true"><use href="#i-check"/></svg>R$ 9,90 a menos do que comprar separado</li>
+              </ul>
+              <p class="offer-price" data-preco></p>
+              <a class="btn btn-buy" href="#comprar" data-comprar>Escolher este produto</a>
+            </div>
+          </li>
+
+          <li class="offer" data-produto="refil">
+            <div class="offer-media">
+              <picture>
+                <source srcset="assets/img/refil-640.webp" type="image/webp">
+                <img src="assets/img/refil-640.jpg" width="640" height="427" loading="lazy" alt="Representação do refil SolAcess sendo despejado no frasco de bambu.">
+              </picture>
+            </div>
+            <div class="offer-body">
+              <h3>Refil SolAcess</h3>
+              <p class="offer-desc">Só o conteúdo, para repor o protetor e reutilizar a embalagem principal de bambu.</p>
+              <ul class="offer-list">
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Reaproveita o frasco de bambu</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>Diminui o descarte de embalagem</li>
+                <li><svg aria-hidden="true"><use href="#i-check"/></svg>200 ml</li>
+              </ul>
+              <p class="offer-price" data-preco></p>
+              <a class="btn btn-buy" href="#comprar" data-comprar>Escolher este produto</a>
+            </div>
+          </li>
+        </ul>
+
+        <p class="img-note">Imagens ilustrativas do conceito, algumas criadas com inteligência artificial. Informações impressas nos rótulos das imagens não são definitivas: o FPS 50 é a meta do projeto e, assim como a proteção UVA/UVB e a resistência à água, ainda será comprovado em testes.</p>
+      </div>
+    </section>
+
+    <!-- FICHA TÉCNICA -->
+    <section class="specs" id="especificacoes" aria-labelledby="specs-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Ficha técnica</p>
+          <h2 id="specs-title" class="display">O que já está planejado <em>e o que vem por aí</em>.</h2>
+          <p class="note">Antes de chegar ao mercado, o SolAcess vai passar por testes de estabilidade, segurança, eficácia e compatibilidade com a embalagem, além das avaliações exigidas pelos órgãos reguladores.</p>
+        </div>
+        <figure class="tec-figure">
+          <a class="tec-image" href="assets/img/visao-tecnica-1083.jpg" target="_blank" rel="noopener">
+            <picture>
+              <source srcset="assets/img/visao-tecnica-640.webp 640w, assets/img/visao-tecnica-1083.webp 1083w" sizes="(max-width: 900px) 92vw, 880px" type="image/webp">
+              <img src="assets/img/visao-tecnica-1083.jpg" width="1083" height="992" loading="lazy" alt="Desenho técnico explodido do conceito SolAcess. Mostra a tampa de bambu; o sistema de pressão (press-top), com acionamento sem torção e dosagem por pressurização; o corte da bomba e o tubo da bomba; o frasco de bambu, com indicação de altura total, diâmetro e espessura da parede; o refil de 200 ml, sistema ecológico de refil com economia circular; o rolo aplicador; a barreira de cera de abelha; a base; o detalhe da textura tátil antiderrapante; e a fórmula proposta, com óxido de zinco não nano, karité, coco, vitamina E e meta de FPS 50, a comprovar.">
+            </picture>
+          </a>
+          <figcaption>
+            <span>Visão técnica do conceito: como as partes do frasco se encaixam. As medidas e o funcionamento exato do mecanismo serão definidos no protótipo físico.</span>
+            <a class="btn btn-ghost tec-open" href="assets/img/visao-tecnica-1083.jpg" target="_blank" rel="noopener">Ver a imagem em tamanho maior</a>
+          </figcaption>
+        </figure>
+        <dl class="spec-list" id="spec-list"></dl>
+      </div>
+    </section>
+
+    <!-- PERGUNTAS FREQUENTES -->
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap faq-grid">
+        <div class="section-head">
+          <p class="eyebrow">Perguntas frequentes</p>
+          <h2 id="faq-title" class="display">Dúvidas <em>comuns</em>.</h2>
+          <p class="note">Não encontrou o que procurava? Fale com a equipe pelos canais de contato logo abaixo.</p>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>O SolAcess já está à venda?</summary>
+            <p>Ainda não. O projeto está na etapa de planejamento e desenvolvimento conceitual. O próximo passo é produzir um protótipo físico para testar a bomba, o rolo aplicador e o sistema de refil.</p>
+          </details>
+          <details>
+            <summary>Qual é o FPS do SolAcess?</summary>
+            <p>A meta do projeto é FPS 50. Esse valor ainda precisa ser comprovado pelos testes de eficácia antes do lançamento — o mesmo vale para a proteção UVA e UVB.</p>
+          </details>
+          <details>
+            <summary>Ele é resistente à água?</summary>
+            <p>Essa característica ainda não foi definida. Se for pretendida, precisará ser comprovada por testes antes de ser anunciada.</p>
+          </details>
+          <details>
+            <summary>Como funciona a aplicação?</summary>
+            <p>Uma bomba libera a quantidade necessária sem que seja preciso abrir completamente a embalagem, e um rolo espalha o protetor direto na pele. O funcionamento exato do mecanismo será definido no protótipo físico.</p>
+          </details>
+          <details>
+            <summary>Para quem o SolAcess foi pensado?</summary>
+            <p>Principalmente para pessoas com artrite, Parkinson, mobilidade reduzida, pouca força nas mãos ou dificuldade com embalagens convencionais. Mas ele não é exclusivo: qualquer pessoa que queira mais praticidade pode usar.</p>
+          </details>
+          <details>
+            <summary>Como funciona o refil?</summary>
+            <p>A ideia é reutilizar a embalagem principal de bambu e trocar apenas o conteúdo. O modelo definitivo do refil ainda será desenvolvido e testado.</p>
+          </details>
+          <details>
+            <summary>A embalagem é biodegradável?</summary>
+            <p>Não afirmamos isso. A embalagem usa bambu e PLA em alguns componentes, mas há materiais diferentes envolvidos, e a degradação depende de condições específicas. Qualquer afirmação desse tipo só virá com testes e informações técnicas dos materiais.</p>
+          </details>
+          <details>
+            <summary>Quem desenvolve o SolAcess?</summary>
+            <p>O SolAcess é um projeto da Equipe 6 do SESI da Indústria. A fabricação e a validação da formulação estão planejadas para ser feitas com apoio de uma empresa especializada, que ainda não foi definida.</p>
+          </details>
+          <details>
+            <summary>Quanto custa o SolAcess?</summary>
+            <p>O Protetor SolAcess custa R$ 49,90, o Refil de 200 ml custa R$ 24,90 e o Kit Protetor + Refil sai por R$ 64,90.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section class="contato" id="contato" aria-labelledby="contato-title">
+      <div class="wrap contato-box">
+        <div>
+          <p class="eyebrow">Contato</p>
+          <h2 id="contato-title" class="display-sm">Quer acompanhar o SolAcess?</h2>
+          <p>Fale com a equipe pelos canais abaixo.</p>
+        </div>
+        <ul class="contact-list" id="contact-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-top">
+      <p class="footer-statement">Proteção solar ao alcance de <em>todas as mãos</em>.</p>
+      <a class="btn btn-light" href="#comprar">Escolher meu SolAcess</a>
+    </div>
+    <div class="wrap footer-grid">
+      <div>
+        <a class="brand" href="#inicio">
+          <svg class="brand-sun" viewBox="0 0 40 40" aria-hidden="true"><use href="#sun"/></svg>
+          <span>SolAcess</span>
+        </a>
+        <p class="footer-tag">Acessibilidade, praticidade e sustentabilidade.</p>
+      </div>
+      <nav aria-label="Rodapé: produto">
+        <p class="footer-title">Produto</p>
+        <ul>
+          <li><a href="#produto">Como funciona</a></li>
+          <li><a href="#frasco">Conheça o frasco</a></li>
+          <li><a href="#galeria">Galeria</a></li>
+          <li><a href="#comprar">Comprar</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Rodapé: projeto">
+        <p class="footer-title">Projeto</p>
+        <ul>
+          <li><a href="#sustentabilidade">Bambu e sustentabilidade</a></li>
+          <li><a href="#inclusao">Inclusão</a></li>
+          <li><a href="#faq">Perguntas frequentes</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+      <p class="footer-legal">Projeto desenvolvido pela Equipe 6 do SESI da Indústria. O SolAcess está em fase de planejamento: formulação, embalagem e mecanismos são conceituais e podem mudar após estudos e testes. Imagens ilustrativas.</p>
+    </div>
+  </footer>
+
+  <!-- Aviso de compra (sem transação) -->
+  <dialog class="buy-dialog" id="buy-dialog" aria-labelledby="buy-title">
+    <form method="dialog">
+      <button class="dialog-close" value="fechar" aria-label="Fechar">×</button>
+      <svg class="dialog-sun" viewBox="0 0 40 40" aria-hidden="true"><use href="#sun"/></svg>
+      <h2 id="buy-title">Vendas ainda não abertas</h2>
+      <p>Você escolheu <strong data-escolha></strong>. O SolAcess está em desenvolvimento e ainda não pode ser comprado.</p>
+      <p data-aviso-texto>Quando as vendas abrirem, este botão levará direto para a loja.</p>
+      <div class="dialog-actions">
+        <a class="btn" data-aviso-link href="#contato">Acompanhar o lançamento</a>
+        <button class="btn btn-ghost" value="fechar">Voltar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="assets/js/loja.js"></script>
+  <script src="assets/js/specs.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/hero.js" defer></script>
+</body>
+</html>
