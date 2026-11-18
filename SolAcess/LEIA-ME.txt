@@ -1,0 +1,16 @@
+SolAcess - site completo
+========================
+
+COMO ABRIR
+1. Extraia TODO o conteudo deste .zip (botao direito > Extrair tudo).
+   Nao abra o index.html de dentro do .zip: as imagens e os videos nao carregam.
+2. Abra o arquivo index.html na pasta extraida (duplo clique).
+
+CONTEUDO
+- index.html .................. pagina do site
+- assets/css/style.css ........ estilos
+- assets/js/ .................. scripts (abertura, menu, loja, ficha tecnica)
+- assets/img/ e assets/video/ . imagens e videos
+- codigo-fonte-completo.html .. mesmo site com HTML + CSS + JS num unico arquivo (leitura do codigo)
+
+Mantenha as pastas juntas; se mover o index.html sozinho, as imagens somem.
